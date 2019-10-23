@@ -13,12 +13,13 @@ public class UDPTest {
     }
  
     @Test
-    public void whenCanSendAndReceivePacket_thenCorrect() {
+    public void test() {
     	String[] knockingSequence = {"5", "7000", "4000", "6543"};
-        client.sendEcho(knockingSequence, portNumber);
-//        assertEquals("hello server", echo);
-//        echo = client.sendEcho("server is working");
-//        assertFalse(echo.equals("hello server"));
+    	String[] knockingSequence2 = {"5", "70100", "4000", "6543"};
+        String connection = client.sendEcho(knockingSequence, portNumber);
+        assertEquals("success", connection);
+        String connection2 = client.sendEcho(knockingSequence2, portNumber);
+        assertFalse(connection2.equals("success"));
     }
  
     @After

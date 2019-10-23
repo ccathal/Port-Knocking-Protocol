@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MyServer extends Thread {
     
@@ -8,7 +9,7 @@ public class MyServer extends Thread {
     private boolean running;
     private byte[] buf = new byte[256];
     private ArrayList<String> knockingSequence = new ArrayList<String>();
-    private final String[] confirmKnockingSequence = {"5", "7000", "4000", "6543"};
+    private final ArrayList<String> confirmKnockingSequence =  new ArrayList<String>(Arrays.asList("5", "7000", "4000", "6543"));
  
     public MyServer(int pn) {
         try {
@@ -20,6 +21,7 @@ public class MyServer extends Thread {
  
     public void run() {
         running = true;
+        System.out.println("Knocking Sequence: " + confirmKnockingSequence);
  
         while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -28,28 +30,35 @@ public class MyServer extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}         
-            //InetAddress address = packet.getAddress();
-            //int port = packet.getPort();
-            //packet = new DatagramPacket(buf, buf.length, address, port);
+            InetAddress address = packet.getAddress();
+            int port = packet.getPort();
+            
             String received = new String(packet.getData(), 0, packet.getLength());
-            System.out.println("server: message = " + received + ".");
+            System.out.println("server: knocking sequence recieved = " + received + ".");
             
             if (knockingSequence.size() < 5) {
             	
             	knockingSequence.add(received);
-            	
+            	            	
             	if(knockingSequence.size() == 4) {
-	            	for (int i = 0; i < 4; i++) {
-	            		System.out.println("" + knockingSequence.get(i) + " = " + confirmKnockingSequence[i]);
-	            		if (!knockingSequence.get(i).equals(confirmKnockingSequence[i])) {
-	            			System.out.println("unsucessful - closing connection");
-	            			running = false;
-	            			break;
-	            		}
-	            	}
-            	}
+            		String response;
+            		if (knockingSequence.equals(confirmKnockingSequence)) {
+            			response = "success";
+            		} else {
+            			response = "unsucessful - closing connection";
+    					running = false;
+            		}
+            		knockingSequence.clear();
+            		buf = response.getBytes();
+            		packet = new DatagramPacket(buf, buf.length, address, port);
+            		try {
+						socket.send(packet);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+            	}          	
             }
-        }     
+        }
         socket.close();
     }
 }
