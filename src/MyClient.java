@@ -1,9 +1,17 @@
+package src;
+
 import java.io.*;
-import java.math.BigInteger;
 import java.net.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class MyClient {
-
+	
 	private DatagramSocket socket;
     private InetAddress address;
     private byte[] buf;
@@ -21,11 +29,12 @@ public class MyClient {
 		}
     }
  
-    public String sendEcho(String[] knockingSequence, int portNumber) {
+    public void sendEcho(String[] knockingSequence, int portNumber) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
         
-    	//send UDP packet
     	for (int i = 0; i < knockingSequence.length; i++) {
-    		buf = knockingSequence[i].getBytes();
+    		long time = System.currentTimeMillis();
+            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequence[i] + "," + time));
+            buf = encryptedString.getBytes();
     	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
     	    try {
     	    	socket.send(packet);
@@ -34,16 +43,16 @@ public class MyClient {
 			}
     	}
     	
-    	byte[] buff = new byte[256];
-    	DatagramPacket recievePacket = new DatagramPacket(buff, buff.length);
-        try {
-			socket.receive(recievePacket);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        String received = new String(recievePacket.getData(), 0, recievePacket.getLength());
-        System.out.println("client: " + received);
-        return received;
+//    	byte[] buff = new byte[256];
+//    	DatagramPacket recievePacket = new DatagramPacket(buff, buff.length);
+//        try {
+//			socket.receive(recievePacket);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//        String received = new String(recievePacket.getData(), 0, recievePacket.getLength());
+//        System.out.println("client: " + received);
+//        return received;
     }
  
     public void close() {

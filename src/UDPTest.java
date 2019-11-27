@@ -1,5 +1,15 @@
+package src;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import org.junit.*;
 
 public class UDPTest {
@@ -13,13 +23,16 @@ public class UDPTest {
     }
  
     @Test
-    public void test() {
-    	String[] knockingSequence = {"5", "7000", "4000", "6543"};
+    public void test() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
+    	String[] knockingSequence = {"5", "7000", "6543"};
+    	String[] missMatch = {"4000"};
     	String[] knockingSequence2 = {"5", "70100", "4000", "6543"};
-        String connection = client.sendEcho(knockingSequence, portNumber);
-        assertEquals("success", connection);
-        String connection2 = client.sendEcho(knockingSequence2, portNumber);
-        assertFalse(connection2.equals("success"));
+        client.sendEcho(knockingSequence, portNumber);
+        System.out.println("here");
+        client.sendEcho(missMatch, portNumber);
+        //assertEquals("success", connection);
+        client.sendEcho(knockingSequence2, portNumber);
+        //assertFalse(connection2.equals("success"));
     }
  
     @After
