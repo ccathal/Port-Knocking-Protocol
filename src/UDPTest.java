@@ -24,12 +24,12 @@ public class UDPTest {
  
     @Test
     public void test() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
-    	String[] knockingSequence = {"5", "7000", "6543"};
+    	String[] knockingSequence = {"5", "7000", "4000", "6543"};
     	String[] missMatch = {"4000"};
-    	String[] knockingSequence2 = {"5", "70100", "4000", "6543"};
+    	String[] knockingSequence2 = {"65535", "65535", "65535", "65535"};
         client.sendEcho(knockingSequence, portNumber);
-        System.out.println("here");
-        client.sendEcho(missMatch, portNumber);
+        //System.out.println("here");
+        //client.sendEcho(missMatch, portNumber);
         //assertEquals("success", connection);
         client.sendEcho(knockingSequence2, portNumber);
         //assertFalse(connection2.equals("success"));

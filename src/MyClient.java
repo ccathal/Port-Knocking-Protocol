@@ -42,17 +42,6 @@ public class MyClient {
 				e.printStackTrace();
 			}
     	}
-    	
-//    	byte[] buff = new byte[256];
-//    	DatagramPacket recievePacket = new DatagramPacket(buff, buff.length);
-//        try {
-//			socket.receive(recievePacket);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//        String received = new String(recievePacket.getData(), 0, recievePacket.getLength());
-//        System.out.println("client: " + received);
-//        return received;
     }
  
     public void close() {

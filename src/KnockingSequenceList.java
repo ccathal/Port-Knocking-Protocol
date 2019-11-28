@@ -2,9 +2,9 @@ package src;
 
 import java.util.ArrayList;
 
-public class KnockingSequenceList extends ArrayList<AttemptKnockingSequence>{
+public class KnockingSequenceList extends ArrayList<AttemptKnockingSequence> {
 	@Override
-    public boolean add(AttemptKnockingSequence e){
+    public boolean add(AttemptKnockingSequence e) {
         if(contains(e)){
             return false;
         }
@@ -13,13 +13,13 @@ public class KnockingSequenceList extends ArrayList<AttemptKnockingSequence>{
     }
 
     @Override
-    public boolean contains(Object o){
+    public boolean contains(Object o) {
         if(!(o instanceof AttemptKnockingSequence))
             return false;
 
         AttemptKnockingSequence e = (AttemptKnockingSequence) o;
 
-        for(AttemptKnockingSequence item : this){
+        for(AttemptKnockingSequence item : this) {
             if(item.getPort() == e.getPort() && 
                item.getAddress().equals(e.getAddress())){
                 return true;

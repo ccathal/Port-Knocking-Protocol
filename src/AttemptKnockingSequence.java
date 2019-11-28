@@ -18,8 +18,7 @@ public class AttemptKnockingSequence {
 	
 	public void addSingleKnock(SingleKnock knock) {
 		knockSequence.add(knock);
-		Collections.sort(knockSequence, new SingleKnockSort());
-		System.out.println(knockSequence);
+		Collections.sort(knockSequence);
 	}
 
 	public ArrayList<SingleKnock> getSingleKnock() {

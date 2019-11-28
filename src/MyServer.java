@@ -50,8 +50,7 @@ public class MyServer extends Thread {
             
             // add new attempt knocking sequence if not tried from specific ip and port before
             attemptKnockingSequence.add(new AttemptKnockingSequence(clientAddress, clientPort));
-
-            
+  
             try {
             	// recieve message, decrype and split
             	String receive = new String(packet.getData(), 0, packet.getLength());
@@ -70,49 +69,32 @@ public class MyServer extends Thread {
 				AttemptKnockingSequence aks = attemptKnockingSequence.get(new AttemptKnockingSequence(clientAddress, clientPort));
 				ArrayList<SingleKnock> aksKnock = aks.getSingleKnock();
 				
-				if (!(aksKnock.size() == 0)) {
-					if (Long.parseLong(values[1]) < aksKnock.get(aksKnock.size() - 1).getTime()) {
-						System.out.println("packet arrived late");
-					}
+				if (!(aksKnock.size() == 0) && Long.parseLong(values[1]) < aksKnock.get(aksKnock.size() - 1).getTime()) {
+					System.out.println("packet arrived late");
 				}
-				
-				System.out.println(aks.getSingleKnock().size());
+
 	            if (aks.getSingleKnock().size() < 5) {
-	            	
 	            	// add incoming knock to the attempt
 	            	aks.addSingleKnock(new SingleKnock(Integer.parseInt(values[0]),Long.parseLong(values[1])));
-	            	        
-	            	
+	            	        	            	
 	            	if(aks.getSingleKnock().size() == 4) {
-	            		//String response;
 	            		for (SingleKnock sk : aks.getSingleKnock()) {
 	            			knockingSequence.add(sk.getPortKnock());
 	            		}
 	            		if (knockingSequence.equals(confirmKnockingSequence)) {
-	            			//response = "success";
 	            			System.out.println("success");
 	            		} else {
 	            			System.out.println("unsucessful - closing connection");
-	            			//response = "unsucessful - closing connection";
 	    					running = false;
 	            		}
 	            		knockingSequence.clear();
 	            		aks.getSingleKnock().clear();
-	            		
-//	            		byte[] responseLength = response.getBytes();
-//	            		packet = new DatagramPacket(responseLength, responseLength.length, clientAddress, clientPort);
-//	            		try {
-//							socket.send(packet);
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//						}
 	            	}          	
 	            }
 			} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException
 					| NoSuchPaddingException e1) {
 				e1.printStackTrace();
-			}
-            
+			}  
         }
         socket.close();
     }
