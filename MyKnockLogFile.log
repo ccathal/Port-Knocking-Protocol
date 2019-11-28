@@ -1,0 +1,12 @@
+Nov 28, 2019 10:45:42 AM src.MyServer run
+INFO: Single Knock Attempt IP - /127.0.0.1: Port - 49681: Port Entered - 5
+Nov 28, 2019 10:45:42 AM src.MyServer run
+INFO: Single Knock Attempt IP - /127.0.0.1: Port - 49681: Port Entered - 7000
+Nov 28, 2019 10:45:42 AM src.MyServer run
+INFO: Single Knock Attempt IP - /127.0.0.1: Port - 49681: Port Entered - 4000
+Nov 28, 2019 10:45:42 AM src.MyServer run
+INFO: Single Knock Attempt IP - /127.0.0.1: Port - 49681: Port Entered - 6543
+Nov 28, 2019 10:45:42 AM src.MyServer run
+INFO: Correct Knock Sequence: IP - /127.0.0.1: Port - 49681
+Nov 28, 2019 10:45:42 AM src.MyServer run
+INFO: Single Knock Attempt IP - /127.0.0.1: Port - 49681: Port Entered - 1

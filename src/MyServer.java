@@ -6,6 +6,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -19,6 +22,8 @@ public class MyServer extends Thread {
     private ArrayList<Integer> knockingSequence = new ArrayList<Integer>();
     private final ArrayList<Integer> confirmKnockingSequence =  new ArrayList<Integer>(Arrays.asList(5, 7000, 4000, 6543));
     private KnockingSequenceList attemptKnockingSequence = new KnockingSequenceList();
+    private Logger logger = Logger.getLogger("MyLog");  
+    private FileHandler fh;
     
     public MyServer(int pn) {
         try {
@@ -31,8 +36,19 @@ public class MyServer extends Thread {
     public void run() {
     	
         running = true;
-        System.out.println("Server Secret Knocking Sequence: " + confirmKnockingSequence);
- 
+        logger.info("Desired Knock Sequence" + confirmKnockingSequence);
+        
+        
+        //set up logging
+        try {
+			fh = new FileHandler("MyKnockLogFile.log");
+		} catch (SecurityException | IOException e2) {
+			e2.printStackTrace();
+		}
+		logger.addHandler(fh);
+		SimpleFormatter formatter = new SimpleFormatter();  
+        fh.setFormatter(formatter);
+        
         while (running) {
         	
         	//create new packet
@@ -50,27 +66,27 @@ public class MyServer extends Thread {
             
             // add new attempt knocking sequence if not tried from specific ip and port before
             attemptKnockingSequence.add(new AttemptKnockingSequence(clientAddress, clientPort));
+            
+            // get the attempt knocking sequence with ip and port
+			AttemptKnockingSequence aks = attemptKnockingSequence.get(new AttemptKnockingSequence(clientAddress, clientPort));
+			ArrayList<SingleKnock> aksKnock = aks.getSingleKnock();
   
             try {
             	// recieve message, decrype and split
             	String receive = new String(packet.getData(), 0, packet.getLength());
 				String received = RSAEncrypt.decrypt(receive);
 				String[] values = received.split(",");
-				System.out.println("server: knocking sequence recieved = " + values[0] + ".");
+				logger.info("Single Knock Attempt IP - " + aks.getAddress() + ": Port - " + aks.getPort() + ": Port Entered - " + values[0]);
 				
 				// deal with time
 				if (Long.parseLong(values[1]) > System.currentTimeMillis()) {
-					System.out.println("Time in the Port Knocking Sequence is in the future - closing connection");
+					logger.severe("Future Time in Packet Knock: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 					running = false;
 					break;
 				}
 				
-				// get the attempt knocking sequence with ip and port
-				AttemptKnockingSequence aks = attemptKnockingSequence.get(new AttemptKnockingSequence(clientAddress, clientPort));
-				ArrayList<SingleKnock> aksKnock = aks.getSingleKnock();
-				
 				if (!(aksKnock.size() == 0) && Long.parseLong(values[1]) < aksKnock.get(aksKnock.size() - 1).getTime()) {
-					System.out.println("packet arrived late");
+					logger.warning("Late Packet Arrival: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 				}
 
 	            if (aks.getSingleKnock().size() < 5) {
@@ -82,9 +98,10 @@ public class MyServer extends Thread {
 	            			knockingSequence.add(sk.getPortKnock());
 	            		}
 	            		if (knockingSequence.equals(confirmKnockingSequence)) {
-	            			System.out.println("success");
+	            			logger.info("Correct Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
+	            			
 	            		} else {
-	            			System.out.println("unsucessful - closing connection");
+	            			logger.warning("Incorrect Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 	    					running = false;
 	            		}
 	            		knockingSequence.clear();
@@ -92,7 +109,7 @@ public class MyServer extends Thread {
 	            	}          	
 	            }
 			} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException
-					| NoSuchPaddingException e1) {
+					| NoSuchPaddingException | SecurityException e1) {
 				e1.printStackTrace();
 			}  
         }

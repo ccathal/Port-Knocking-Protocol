@@ -25,8 +25,7 @@ public class UDPTest {
     @Test
     public void test() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
     	String[] knockingSequence = {"5", "7000", "4000", "6543"};
-    	String[] missMatch = {"4000"};
-    	String[] knockingSequence2 = {"65535", "65535", "65535", "65535"};
+    	String[] knockingSequence2 = {"1", "6000", "6535", "6555"};
         client.sendEcho(knockingSequence, portNumber);
         //System.out.println("here");
         //client.sendEcho(missMatch, portNumber);
