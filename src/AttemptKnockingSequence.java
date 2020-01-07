@@ -9,6 +9,7 @@ public class AttemptKnockingSequence {
 	private InetAddress address;
 	private int port;
 	private ArrayList<SingleKnock> knockSequence;
+	private ArrayList<Integer> knockConnection;
 
 	public AttemptKnockingSequence(InetAddress address, int port) {
 		this.setAddress(address);
@@ -19,6 +20,10 @@ public class AttemptKnockingSequence {
 	public void addSingleKnock(SingleKnock knock) {
 		knockSequence.add(knock);
 		Collections.sort(knockSequence);
+	}
+	
+	public void addConnetionKnock(int i) {
+		knockConnection.add(i);
 	}
 
 	public ArrayList<SingleKnock> getSingleKnock() {
@@ -39,6 +44,10 @@ public class AttemptKnockingSequence {
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+
+	public ArrayList<Integer> getConnectionKnock() {
+		return knockConnection;
 	}
 	
         

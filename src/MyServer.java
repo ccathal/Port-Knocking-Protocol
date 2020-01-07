@@ -35,11 +35,7 @@ public class MyServer extends Thread {
  
     public void run() {
     	
-        running = true;
-        logger.info("Desired Knock Sequence" + confirmKnockingSequence);
-        
-        
-        //set up logging
+    	//set up logging
         try {
 			fh = new FileHandler("MyKnockLogFile.log");
 		} catch (SecurityException | IOException e2) {
@@ -48,6 +44,9 @@ public class MyServer extends Thread {
 		logger.addHandler(fh);
 		SimpleFormatter formatter = new SimpleFormatter();  
         fh.setFormatter(formatter);
+    	
+        running = true;
+        logger.info("Desired Knock Sequence" + confirmKnockingSequence);
         
         while (running) {
         	
@@ -76,7 +75,8 @@ public class MyServer extends Thread {
             	String receive = new String(packet.getData(), 0, packet.getLength());
 				String received = RSAEncrypt.decrypt(receive);
 				String[] values = received.split(",");
-				logger.info("Single Knock Attempt IP - " + aks.getAddress() + ": Port - " + aks.getPort() + ": Port Entered - " + values[0]);
+				logger.info("Single Knock Attempt IP - " + aks.getAddress() + ": Port - " 
+						+ aks.getPort() + ": Port Entered - " + values[0]);
 				
 				// deal with time
 				if (Long.parseLong(values[1]) > System.currentTimeMillis()) {
@@ -91,14 +91,16 @@ public class MyServer extends Thread {
 
 	            if (aks.getSingleKnock().size() < 5) {
 	            	// add incoming knock to the attempt
-	            	aks.addSingleKnock(new SingleKnock(Integer.parseInt(values[0]),Long.parseLong(values[1])));
-	            	        	            	
+	            	aks.addSingleKnock(new SingleKnock(Integer.parseInt(values[0]), Long.parseLong(values[1]), Integer.parseInt(values[2])));
+	            	aks.addConnetionKnock(aks.getConnectionKnock());        	            	
 	            	if(aks.getSingleKnock().size() == 4) {
 	            		for (SingleKnock sk : aks.getSingleKnock()) {
 	            			knockingSequence.add(sk.getPortKnock());
 	            		}
 	            		if (knockingSequence.equals(confirmKnockingSequence)) {
 	            			logger.info("Correct Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
+	            			ArrayList<Integer> connectionKnocks = aks.getConnectionKnock();
+	            			logger.info("Submitting connection ports for allowed connection: Connection Knocks - " + connectionKnocks);
 	            			
 	            		} else {
 	            			logger.warning("Incorrect Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
