@@ -32,15 +32,17 @@ public class MyClient {
 		}
     }
  
-    public void sendEcho(String[] knockingSequence, int portNumber) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
+    public void sendEcho(String[] knockingSequence, int portNumber) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
     	ArrayList<Integer> connectionPorts = getRandomConnectionSockets(knockingSequence.length);
     	for (int i = 0; i < knockingSequence.length; i++) {
     		long time = System.currentTimeMillis();
+    		System.out.println("xx   " + knockingSequence[i]);
             String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequence[i] + "," + time + "," + connectionPorts.get(i)));
             buf = encryptedString.getBytes();
     	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
     	    try {
     	    	socket.send(packet);
+    	    	Thread.sleep(10);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
