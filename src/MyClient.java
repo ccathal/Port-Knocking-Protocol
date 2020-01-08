@@ -19,25 +19,31 @@ public class MyClient {
     private byte[] buf;
     private Random r = new Random();
 
+    // open datagram socket on client side with localhost address
     public MyClient() {
     	try {
 			socket = new DatagramSocket();
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-        try {
 			address = InetAddress.getByName("localhost");
-		} catch (UnknownHostException e) {
+		} catch (SocketException | UnknownHostException e) {
 			e.printStackTrace();
 		}
     }
  
+    // send packets method
     public void sendEcho(String[] knockingSequence, int portNumber) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
+    	
+    	// get list of random ports of length 'knockingsequence' to be used as sequence of connection ports
     	ArrayList<Integer> connectionPorts = getRandomConnectionSockets(knockingSequence.length);
+    	
+    	// for each element in knockingSequence send a pack as an attempt knock to server
     	for (int i = 0; i < knockingSequence.length; i++) {
+    		
+    		// get timestamp
     		long time = System.currentTimeMillis();
-    		System.out.println("xx   " + knockingSequence[i]);
+    		// encrypt string using RSA
             String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequence[i] + "," + time + "," + connectionPorts.get(i)));
+            
+            // send packet
             buf = encryptedString.getBytes();
     	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
     	    try {
@@ -48,7 +54,8 @@ public class MyClient {
 			}
     	}
     }
- 
+    
+    // method to return number of random port numbers up to 65535. Will act as connection sockets.
     public ArrayList<Integer> getRandomConnectionSockets(int packedSequenceSize) {
     	ArrayList<Integer> sock = new ArrayList<>();
     	for (int i = 0; i < packedSequenceSize; i ++) {
@@ -56,6 +63,7 @@ public class MyClient {
     	}
 		return sock;
     }
+    
     public void close() {
         socket.close();
     }

@@ -1,5 +1,7 @@
 package src;
 
+import java.util.Objects;
+
 public class SingleKnock implements Comparable<SingleKnock> {
 	
 	private int portKnock;
@@ -16,7 +18,6 @@ public class SingleKnock implements Comparable<SingleKnock> {
 		return connectionKnock;
 	}
 	
-	
 	public int getPortKnock() {
 		return portKnock;
 	}
@@ -27,9 +28,9 @@ public class SingleKnock implements Comparable<SingleKnock> {
 	
 	@Override
 	public int compareTo(SingleKnock s1) {
-		if(this.getTime() == s1.getTime()) {
+		if(Objects.equals(time, s1.time)) {
 			return 0;
-		} else if(this.getTime() > s1.getTime()) {
+		} else if(time > s1.time) {
 			return 1;
 		} else {
 			return -1;
