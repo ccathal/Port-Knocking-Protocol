@@ -126,15 +126,7 @@ public class MyServer extends Thread {
 		            	if(arr.size() == 4) {
 		            		
 		            		// sort array based on timestamp
-		            		System.out.println(hashKnock.get(aks));
-		            		for (SingleKnock sk : hashKnock.get(aks)) {
-		            			System.out.println(sk.getTime());
-		            		}
 		            		Collections.sort(hashKnock.get(aks));
-		            		System.out.println(hashKnock.get(aks));
-		            		for (SingleKnock sk : hashKnock.get(aks)) {
-		            			System.out.println(sk.getTime());
-		            		}
 		            		
 		            		// create arraylist of the knocking and connection sequence
 		            		for (SingleKnock sk : hashKnock.get(aks)) {
