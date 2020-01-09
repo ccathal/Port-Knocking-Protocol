@@ -54,7 +54,7 @@ public class MyServer extends Thread {
         fh.setFormatter(formatter);
     	
         running = true;
-        logger.info("Desired Knock Sequence" + confirmKnockingSequence);
+        logger.info("Desired Knock Sequence - " + confirmKnockingSequence);
         
         // thread safe section
         synchronized(this) {
@@ -157,6 +157,6 @@ public class MyServer extends Thread {
 				}  
 	        }
         }
-        socket.close();
+        //socket.close();
     }
 }

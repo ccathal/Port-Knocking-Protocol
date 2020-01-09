@@ -16,40 +16,41 @@ public class MyClient {
 	
 	private DatagramSocket socket;
     private InetAddress address;
+    private int portNumber;
     private byte[] buf;
     private Random r = new Random();
 
     // open datagram socket on client side with localhost address
-    public MyClient() {
+    public MyClient(InetAddress address, int portNumber) {
     	try {
 			socket = new DatagramSocket();
-			address = InetAddress.getByName("localhost");
-		} catch (SocketException | UnknownHostException e) {
+			this.address = address;
+        	this.portNumber = portNumber;
+		} catch (SocketException e) {
 			e.printStackTrace();
 		}
     }
  
     // send packets method
-    public void sendEcho(String[] knockingSequenceP1, int portNumber) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
+    public void sendEcho(String[] knockingSequence) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
     	
     	// get list of random ports of length 'knockingsequence' to be used as sequence of connection ports
-    	ArrayList<Integer> connectionPorts = getRandomConnectionSockets(knockingSequenceP1.length);
+    	ArrayList<Integer> connectionPorts = getRandomConnectionSockets(knockingSequence.length);
     	
     	// for each element in knockingSequence send a pack as an attempt knock to server
-    	for (int i = 0; i < knockingSequenceP1.length - 1; i++) {
+    	for (int i = 0; i < knockingSequence.length; i++) {
     		
     		// get timestamp
-    		//long time = System.currentTimeMillis();
+    		long time = System.currentTimeMillis();
     		
     		// encrypt string using RSA
-            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequenceP1[i] + "," + knockingSequenceP1[i+1] + "," + connectionPorts.get(i)));
-            
+            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequence[i] + "," + time + "," + connectionPorts.get(i)));
+
             // send packet
             buf = encryptedString.getBytes();
-    	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+    	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portNumber);
     	    try {
     	    	socket.send(packet);
-    	    	Thread.sleep(10);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
