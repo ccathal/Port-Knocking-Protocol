@@ -2,7 +2,7 @@ package src;
 
 import java.util.ArrayList;
 
-// **************currently NOT used
+// **********currently a redendent class**********
 public class KnockingSequenceList extends ArrayList<AttemptKnockingSequence> {
 	@Override
     public boolean add(AttemptKnockingSequence e) {

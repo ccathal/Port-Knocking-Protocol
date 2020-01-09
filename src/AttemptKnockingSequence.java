@@ -3,6 +3,7 @@ package src;
 import java.net.InetAddress;
 import java.util.Objects;
 
+// class for details of the client IP and Port that is knocking
 public class AttemptKnockingSequence {
 	
 	private InetAddress address;
@@ -21,6 +22,7 @@ public class AttemptKnockingSequence {
 		return port;
 	}
 
+	// override equals method to check equality (by ip and port) of class object instances
 	@Override
 	public boolean equals(Object obj) {
 	    if (obj == null) return false;
@@ -32,7 +34,7 @@ public class AttemptKnockingSequence {
 	    return Objects.equals(address, aks.address) && port == aks.port;
 	}
 	
-
+	// override hashcode to return hash of object class instance if has been proviously created
 	@Override
 	public int hashCode() {
 	    return Objects.hash(address, port);

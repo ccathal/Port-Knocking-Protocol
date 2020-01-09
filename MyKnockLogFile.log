@@ -1,20 +1,38 @@
-Jan 08, 2020 5:23:33 PM src.MyServer run
+Jan 08, 2020 6:22:42 PM src.MyServer run
 INFO: Desired Knock Sequence[5, 7000, 4000, 6543]
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 54396: Port Knock Entered - 5
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 54396
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 54396: Port Knock Entered - 7000
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 54396
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 54396: Port Knock Entered - 4000
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 54396
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 54396: Port Knock Entered - 6543
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Correct Knock Sequence: IP - /127.0.0.1: Port - 54396
-Jan 08, 2020 5:23:33 PM src.MyServer run
-INFO: Submitting connection ports for allowed connection: Connection Knocks - [4232, 19086, 14597, 25618]
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 5
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 7000
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 4000
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 6543
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Correct Knock Sequence: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Submitting connection ports for allowed connection: Connection Knocks - [41120, 25096, 38229, 13924]
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 1
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 6000
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 6535
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 63855
+Jan 08, 2020 6:22:42 PM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 63855: Port Knock Entered - 6555
+Jan 08, 2020 6:22:42 PM src.MyServer run
+WARNING: Incorrect Knock Sequence: IP - /127.0.0.1: Port - 63855

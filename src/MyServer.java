@@ -111,7 +111,7 @@ public class MyServer extends Thread {
 					
 					// print 'late packet arrival' message
 					// when incoming packet timestamp is greater than previous packet timestamp
-					if (!(arr.size() == 1) && Long.parseLong(values[1]) < arr.get(arr.size() - 1).getTime()) {
+					if (!(arr.size() == 0) && Long.parseLong(values[1]) < arr.get(arr.size() - 1).getTime()) {
 						logger.warning("Late Packet Arrival: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 					}				
 				

@@ -27,10 +27,9 @@ public class UDPTest {
     	String[] knockingSequence = {"5", "7000", "4000", "6543"};
     	String[] knockingSequence2 = {"1", "6000", "6535", "6555"};
         client.sendEcho(knockingSequence, portNumber);
-        //System.out.println("here");
         //client.sendEcho(missMatch, portNumber);
         //assertEquals("success", connection);
-        	//client.sendEcho(knockingSequence2, portNumber);
+        client.sendEcho(knockingSequence2, portNumber);
         //assertFalse(connection2.equals("success"));
     }
  
