@@ -23,19 +23,47 @@ public class UDPTest {
     }
  
     @Test
-    public void test() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
-    	String[] knockingSequence = {"5", "7000", "4000", "6543"};
-    	String[] knockingSequence2 = {"1", "6000", "6535", "6555"};
-        client.sendEcho(knockingSequence, portNumber);
-        //client.sendEcho(missMatch, portNumber);
-        //assertEquals("success", connection);
-        client.sendEcho(knockingSequence2, portNumber);
-        //assertFalse(connection2.equals("success"));
+    public void testCorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
+    	String[] knockingSequence = {"5", "7000", "4000", "6543"};       
+    	client.sendEcho(knockingSequence, portNumber);
+    }
+    
+    @Test
+    public void testIncorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
+    	String[] knockingSequence = {"5", "7000", "4010", "6543"};       
+    	client.sendEcho(knockingSequence, portNumber);
+    }
+      
+    @Test
+    public void testFragmentedKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
+    	String[] knockingSequenceP1 = {"5"};
+    	String[] knockingSequenceP2 = {"7000"};
+    	String[] knockingSequenceP3 = {"4000", "6543"};
+    	
+    	client.sendEcho(knockingSequenceP1, portNumber);        
+        client.sendEcho(knockingSequenceP2, portNumber);
+        client.sendEcho(knockingSequenceP3, portNumber);
+    }
+    
+    @Test
+    public void testLateDeliveryPacket() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
+    	/* This block of code is used to test late delivery packets
+         * MyClient.java method needs to be slightly modified to test this code
+        Object[] knockingSequenceP1 = {"5", 123456781L};
+    	Object[] knockingSequenceP2 = {"7000", 123456785L};
+    	Object[] knockingSequenceP3 = {"4000", 123456787L};
+    	Object[] knockingSequenceP4 = {"6543", 123456789L};
+  
+        client.sendEcho(knockingSequenceP1, portNumber);        
+        client.sendEcho(knockingSequenceP2, portNumber);
+        client.sendEcho(knockingSequenceP4, portNumber);
+        client.sendEcho(knockingSequenceP3, portNumber);
+        */
     }
  
     @After
     public void tearDown() {
-//        client.sendEcho("end");
-//        client.close();
+        //client.sendEcho("end");
+        //client.close();
     }
 }

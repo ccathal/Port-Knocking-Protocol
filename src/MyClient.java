@@ -30,18 +30,19 @@ public class MyClient {
     }
  
     // send packets method
-    public void sendEcho(String[] knockingSequence, int portNumber) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
+    public void sendEcho(String[] knockingSequenceP1, int portNumber) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
     	
     	// get list of random ports of length 'knockingsequence' to be used as sequence of connection ports
-    	ArrayList<Integer> connectionPorts = getRandomConnectionSockets(knockingSequence.length);
+    	ArrayList<Integer> connectionPorts = getRandomConnectionSockets(knockingSequenceP1.length);
     	
     	// for each element in knockingSequence send a pack as an attempt knock to server
-    	for (int i = 0; i < knockingSequence.length; i++) {
+    	for (int i = 0; i < knockingSequenceP1.length - 1; i++) {
     		
     		// get timestamp
-    		long time = System.currentTimeMillis();
+    		//long time = System.currentTimeMillis();
+    		
     		// encrypt string using RSA
-            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequence[i] + "," + time + "," + connectionPorts.get(i)));
+            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequenceP1[i] + "," + knockingSequenceP1[i+1] + "," + connectionPorts.get(i)));
             
             // send packet
             buf = encryptedString.getBytes();
