@@ -19,6 +19,7 @@ import javax.crypto.NoSuchPaddingException;
 public class MyServer extends Thread {
         
 	private DatagramSocket socket;
+	private DatagramSocket connectionSocket;
     private boolean running;
     private byte[] buf = new byte[256];
     private ArrayList<Integer> knockingSequence = new ArrayList<Integer>();
@@ -39,8 +40,7 @@ public class MyServer extends Thread {
     }
     
  
-    public void run() {
-    	
+    public void run() {  	
     	
     	// set up logging file
         try {
@@ -138,6 +138,7 @@ public class MyServer extends Thread {
 		            		if (knockingSequence.equals(confirmKnockingSequence)) {
 		            			logger.info("Correct Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 		            			logger.info("Submitting connection ports for allowed connection: Connection Knocks - " + connectionKnocks);
+		            			acceptClientConnection(connectionKnocks);
 		            			
 		            		} else {
 		            			// else, connection refused
@@ -149,7 +150,7 @@ public class MyServer extends Thread {
 		            		knockingSequence.clear();
 		            		hashKnock.get(aks).clear();
 		            		//connectionKnocks.clear();
-		            	}          	
+		            	}
 		            }
 				} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException
 						| NoSuchPaddingException | SecurityException e1) {
@@ -159,4 +160,42 @@ public class MyServer extends Thread {
         }
         //socket.close();
     }
+
+
+	private void acceptClientConnection(ArrayList<Integer> connectionKnocks) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+		
+		// loop through each integer in arraylist that represents a connection to server
+		for(int connectionPort : connectionKnocks) {
+			try {
+				connectionSocket = new DatagramSocket(connectionPort);
+			} catch (SocketException e) {
+				e.printStackTrace();
+			}
+			// get current time in seconds
+			long start = System.currentTimeMillis()/1000;
+			//allow connection for 10 seconds before moving to next connection port
+			while(System.currentTimeMillis()/1000 - start <= 4) {
+	
+				// create new packet
+		        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+		        try {
+		        	// recieve new incoming packet
+					connectionSocket.receive(packet);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
+        
+		        // address and port number of incoming packet
+		        //InetAddress clientAddress = packet.getAddress();
+		        //int clientPort = packet.getPort();
+		        
+		        // recieve message, decrype and split
+            	String receive = new String(packet.getData(), 0, packet.getLength());
+				String received = RSAEncrypt.decrypt(receive);
+				
+				logger.info("Server recieved packet with information - " + received);
+			}
+			connectionSocket.close();
+		}				
+	}
 }

@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -26,12 +27,6 @@ public class UDPTest {
             e.printStackTrace();
         }
     }
- 
-//    @Test
-//    public void testCorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
-//    	String[] knockingSequence = {"5", "7000", "4000", "6543"};       
-//    	client.sendEcho(knockingSequence);
-//    }
     
 //    @Test
 //    public void testIncorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
@@ -45,9 +40,21 @@ public class UDPTest {
     	String[] knockingSequenceP2 = {"7000"};
     	String[] knockingSequenceP3 = {"4000", "6543"};
     	
-    	client.sendEcho(knockingSequenceP1);
-        client.sendEcho(knockingSequenceP2);
-        client.sendEcho(knockingSequenceP3);
+    	ArrayList<Integer> connect1 = client.sendEcho(knockingSequenceP1);
+    	ArrayList<Integer> connect2 = client.sendEcho(knockingSequenceP2);
+    	ArrayList<Integer> connect3 = client.sendEcho(knockingSequenceP3);
+        
+        // want to make a connection attempt to the server using the connection knocks
+    	connect1.addAll(connect2);
+    	connect1.addAll(connect3);
+    	
+    	client.makeConnection(connect1);
+    }
+    
+    @Test
+    public void testCorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
+    	String[] knockingSequence = {"5", "7000", "4000", "6543"};       
+    	client.sendEcho(knockingSequence);
     }
     
     /* This block of code is used to test late delivery packets

@@ -1,20 +1,118 @@
-Jan 09, 2020 7:03:53 PM src.MyServer run
+Jan 10, 2020 11:16:22 AM src.MyServer run
 INFO: Desired Knock Sequence - [5, 7000, 4000, 6543]
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 56743: Port Knock Entered - 5
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 56743
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 56743: Port Knock Entered - 7000
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 56743
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 56743: Port Knock Entered - 4000
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 56743
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 56743: Port Knock Entered - 6543
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Correct Knock Sequence: IP - /127.0.0.1: Port - 56743
-Jan 09, 2020 7:03:53 PM src.MyServer run
-INFO: Submitting connection ports for allowed connection: Connection Knocks - [11989, 48187, 29430, 24064]
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 55667: Port Knock Entered - 5
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 55667
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 55667: Port Knock Entered - 7000
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 55667
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 55667: Port Knock Entered - 4000
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 55667
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 55667: Port Knock Entered - 6543
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Correct Knock Sequence: IP - /127.0.0.1: Port - 55667
+Jan 10, 2020 11:16:22 AM src.MyServer run
+INFO: Submitting connection ports for allowed connection: Connection Knocks - [61846, 2454, 18218, 60698]
+Jan 10, 2020 11:16:23 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:23 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:24 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:24 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:25 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:25 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:26 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:26 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:27 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 61846
+Jan 10, 2020 11:16:27 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:28 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:28 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:29 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:29 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:30 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:30 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:31 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:31 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:32 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 2454
+Jan 10, 2020 11:16:32 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:33 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:33 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:34 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:34 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:35 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:35 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:36 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:36 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:37 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 18218
+Jan 10, 2020 11:16:37 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:38 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:38 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:39 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:39 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:40 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:40 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:41 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:41 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:42 AM src.MyServer acceptClientConnection
+INFO: Server recieved packet with information - Hello server from client port - 60698
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Desired Knock Sequence - [5, 7000, 4000, 6543]
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 59935: Port Knock Entered - 5
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 59935
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 59935: Port Knock Entered - 7000
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 59935
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 59935: Port Knock Entered - 4000
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Multiple knock packets from: IP - /127.0.0.1: Port - 59935
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Single Knock Attempt ClientIP - /127.0.0.1: ClientPort - 59935: Port Knock Entered - 6543
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Correct Knock Sequence: IP - /127.0.0.1: Port - 59935
+Jan 10, 2020 11:16:42 AM src.MyServer run
+INFO: Submitting connection ports for allowed connection: Connection Knocks - [61846, 2454, 18218, 60698, 60064, 46344, 22818, 61094]

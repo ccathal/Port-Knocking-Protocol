@@ -32,11 +32,11 @@ public class MyClient {
     }
  
     // send packets method
-    public void sendEcho(String[] knockingSequence) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
+    public ArrayList<Integer> sendEcho(String[] knockingSequence) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
     	
     	// get list of random ports of length 'knockingsequence' to be used as sequence of connection ports
     	ArrayList<Integer> connectionPorts = getRandomConnectionSockets(knockingSequence.length);
-    	
+ 
     	// for each element in knockingSequence send a pack as an attempt knock to server
     	for (int i = 0; i < knockingSequence.length; i++) {
     		
@@ -51,10 +51,12 @@ public class MyClient {
     	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portNumber);
     	    try {
     	    	socket.send(packet);
+    	    	Thread.sleep(10);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
     	}
+		return connectionPorts;
     }
     
     // method to return number of random port numbers up to 65535. Will act as connection sockets.
@@ -65,8 +67,26 @@ public class MyClient {
     	}
 		return sock;
     }
-    
-    public void close() {
-        socket.close();
-    }
+
+	public void makeConnection(ArrayList<Integer> connect) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
+		// loop through each integer in arraylist that represents a connection to server
+		for(int connectionPort : connect) {
+			// get current time in seconds
+			long start = System.currentTimeMillis()/1000;
+			//allow connection for 10 seconds before moving to next connection port
+			while(System.currentTimeMillis()/1000 - start <= 4) {
+				String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt("Hello server from client port - " + connectionPort));
+
+	            // send packets to the server connection port
+	            buf = encryptedString.getBytes();
+	    	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, connectionPort);
+	    	    try {
+	    	    	Thread.sleep(500);
+	    	    	socket.send(packet); 	
+				} catch (IOException | InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }
