@@ -51,7 +51,6 @@ public class MyClient {
     	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portNumber);
     	    try {
     	    	socket.send(packet);
-    	    	Thread.sleep(10);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

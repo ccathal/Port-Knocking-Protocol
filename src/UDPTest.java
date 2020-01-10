@@ -28,12 +28,20 @@ public class UDPTest {
         }
     }
     
-//    @Test
-//    public void testIncorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
-//    	String[] knockingSequence = {"5", "7000", "4010", "6543"};       
-//    	client.sendEcho(knockingSequence);
-//    }
-//      
+    @Test
+    public void testCorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
+    	String[] correctKnockingSequence = {"5", "7000", "4000", "6543"};       
+    	ArrayList<Integer> correctConnect = client.sendEcho(correctKnockingSequence);
+    	client.makeConnection(correctConnect);
+    }
+    
+    @Test
+    public void testIncorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
+    	String[] incorrectKnockingSequence = {"5", "7000", "4010", "6543"};       
+    	ArrayList<Integer> incorrectConnect = client.sendEcho(incorrectKnockingSequence);
+    	client.makeConnection(incorrectConnect);
+    }
+      
     @Test
     public void testFragmentedKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
     	String[] knockingSequenceP1 = {"5"};
@@ -49,12 +57,6 @@ public class UDPTest {
     	connect1.addAll(connect3);
     	
     	client.makeConnection(connect1);
-    }
-    
-    @Test
-    public void testCorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
-    	String[] knockingSequence = {"5", "7000", "4000", "6543"};       
-    	client.sendEcho(knockingSequence);
     }
     
     /* This block of code is used to test late delivery packets

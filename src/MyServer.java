@@ -56,9 +56,10 @@ public class MyServer extends Thread {
         running = true;
         logger.info("Desired Knock Sequence - " + confirmKnockingSequence);
         
-        // thread safe section
-        synchronized(this) {
-	        while (running) {
+        
+	    while (running) {
+	    	// thread safe section
+	    	synchronized(this) {
 	        	
 	        	// create new packet
 	            DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -102,7 +103,7 @@ public class MyServer extends Thread {
 					if (Long.parseLong(values[1]) > System.currentTimeMillis()) {
 						logger.severe("Future Time in Packet Knock: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 						hashKnock.get(aks).clear();
-						running = false;
+						//running = false;
 						break;
 					}
 					
@@ -114,7 +115,7 @@ public class MyServer extends Thread {
 					if (!(arr.size() == 0) && Long.parseLong(values[1]) < arr.get(arr.size() - 1).getTime()) {
 						logger.warning("Late Packet Arrival: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 					}				
-				
+
 					// when hashmap array of single knocks is 4 or less
 		            if (arr.size() < 5) {
 		            	
@@ -138,18 +139,18 @@ public class MyServer extends Thread {
 		            		if (knockingSequence.equals(confirmKnockingSequence)) {
 		            			logger.info("Correct Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 		            			logger.info("Submitting connection ports for allowed connection: Connection Knocks - " + connectionKnocks);
-		            			acceptClientConnection(connectionKnocks);
-		            			
+		            			//running = false;
+		            			acceptClientConnection(connectionKnocks);            			
 		            		} else {
 		            			// else, connection refused
 		            			logger.warning("Incorrect Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
-		    					running = false;
+		    					//running = false;
 		            		}
 		            		
 		            		// clear arraylists
 		            		knockingSequence.clear();
 		            		hashKnock.get(aks).clear();
-		            		//connectionKnocks.clear();
+		            		connectionKnocks.clear();
 		            	}
 		            }
 				} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException
@@ -196,6 +197,6 @@ public class MyServer extends Thread {
 				logger.info("Server recieved packet with information - " + received);
 			}
 			connectionSocket.close();
-		}				
+		}
 	}
 }
