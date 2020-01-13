@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -16,18 +15,20 @@ import javax.crypto.NoSuchPaddingException;
 import org.junit.*;
 
 public class UDPTest {
-    MyClient client;
-    private final int portNumber = 4445;
-    private final String address = "localhost";
+    private static MyClient client;
+    private static final int portNumber = 4445;
+    private static final String address = "localhost";
     
-    @Before
-    public void setup() throws NoSuchAlgorithmException, UnknownHostException {
+    @BeforeClass
+    public static void setup() throws NoSuchAlgorithmException, UnknownHostException {
+    	System.out.println("duplication");
     	RSAKeyPairGenerator keyPairGenerator = new RSAKeyPairGenerator();
+    	
     	// Base64 encoding the public and private keys to ease the sharing of these keys
-//    	String pubKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded());
-//    	String privKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded());
-//    	System.out.println(pubKey);
-//    	System.out.println(privKey);
+    	// code for converting keys to base64 format (String)
+    	//String pubKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded());
+    	//String privKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded());
+
         PublicKey pubKey = keyPairGenerator.getPublicKey();
         PrivateKey privKey = keyPairGenerator.getPrivateKey();
     	InetAddress ipAddress = InetAddress.getByName(address);
@@ -83,9 +84,8 @@ public class UDPTest {
     }
     */
  
-    @After
-    public void tearDown() {
-        //client.sendEcho("end");
-        //client.close();
+    @AfterClass
+    public static void tearDown() {
+    	// ToDo
     }
 }
