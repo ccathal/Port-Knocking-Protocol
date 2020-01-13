@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,14 +30,16 @@ public class MyServer extends Thread {
     private ArrayList<SingleKnock> knockList = new ArrayList<>();
     private Logger logger = Logger.getLogger("MyLog");
     private FileHandler fh;
+	private PrivateKey privateKey;
     
     // open datagram socket on server with specisied port number
-    public MyServer(int pn) {
+    public MyServer(int pn, PrivateKey privateKey) {
         try {
 			socket = new DatagramSocket(pn);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+        this.privateKey = privateKey;
     }
     
  
@@ -94,7 +97,7 @@ public class MyServer extends Thread {
 	            try {
 	            	// recieve message, decrype and split
 	            	String receive = new String(packet.getData(), 0, packet.getLength());
-					String received = RSAEncrypt.decrypt(receive);
+					String received = RSAEncrypt.decrypt(privateKey, receive);
 					String[] values = received.split(",");
 					logger.info("Single Knock Attempt ClientIP - " + aks.getAddress() + ": ClientPort - " 
 							+ aks.getPort() + ": Port Knock Entered - " + values[0]);
@@ -192,7 +195,7 @@ public class MyServer extends Thread {
 		        
 		        // recieve message, decrype and split
             	String receive = new String(packet.getData(), 0, packet.getLength());
-				String received = RSAEncrypt.decrypt(receive);
+				String received = RSAEncrypt.decrypt(privateKey, receive);
 				
 				logger.info("Server recieved packet with information - " + received);
 			}

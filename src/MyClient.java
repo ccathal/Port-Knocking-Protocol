@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Random;
@@ -19,16 +20,18 @@ public class MyClient {
     private int portNumber;
     private byte[] buf;
     private Random r = new Random();
+    private PublicKey publicKey;
 
     // open datagram socket on client side with localhost address
-    public MyClient(InetAddress address, int portNumber) {
+    public MyClient(InetAddress address, int portNumber, PublicKey publicKey) {
     	try {
 			socket = new DatagramSocket();
-			this.address = address;
-        	this.portNumber = portNumber;
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+    	this.address = address;
+    	this.portNumber = portNumber;
+    	this.publicKey = publicKey;
     }
  
     // send packets method
@@ -44,7 +47,7 @@ public class MyClient {
     		long time = System.currentTimeMillis();
     		
     		// encrypt string using RSA
-            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(knockingSequence[i] + "," + time + "," + connectionPorts.get(i)));
+            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(publicKey, knockingSequence[i] + "," + time + "," + connectionPorts.get(i)));
 
             // send packet
             buf = encryptedString.getBytes();
@@ -74,7 +77,7 @@ public class MyClient {
 			long start = System.currentTimeMillis()/1000;
 			//allow connection for 10 seconds before moving to next connection port
 			while(System.currentTimeMillis()/1000 - start <= 4) {
-				String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt("Hello server from client port - " + connectionPort));
+				String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(publicKey, "Hello server from client port - " + connectionPort));
 
 	            // send packets to the server connection port
 	            buf = encryptedString.getBytes();

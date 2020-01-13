@@ -4,7 +4,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -18,14 +21,19 @@ public class UDPTest {
     private final String address = "localhost";
     
     @Before
-    public void setup() {
-    	new MyServer(portNumber).start();
-    	try {
-    	    InetAddress ipAddress = InetAddress.getByName(address);
-    	    client = new MyClient(ipAddress, portNumber);
-    	} catch(UnknownHostException e){
-            e.printStackTrace();
-        }
+    public void setup() throws NoSuchAlgorithmException, UnknownHostException {
+    	RSAKeyPairGenerator keyPairGenerator = new RSAKeyPairGenerator();
+    	// Base64 encoding the public and private keys to ease the sharing of these keys
+//    	String pubKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded());
+//    	String privKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded());
+//    	System.out.println(pubKey);
+//    	System.out.println(privKey);
+        PublicKey pubKey = keyPairGenerator.getPublicKey();
+        PrivateKey privKey = keyPairGenerator.getPrivateKey();
+    	InetAddress ipAddress = InetAddress.getByName(address);
+    	
+    	new MyServer(portNumber, privKey).start();
+    	client = new MyClient(ipAddress, portNumber, pubKey);
     }
     
     @Test
