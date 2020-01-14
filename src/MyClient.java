@@ -20,10 +20,10 @@ public class MyClient {
     private int portNumber;
     private byte[] buf;
     private Random r = new Random();
-    private PublicKey publicKey;
+    private String publicKey;
 
     // open datagram socket on client side with localhost address
-    public MyClient(InetAddress address, int portNumber, PublicKey publicKey) {
+    public MyClient(InetAddress address, int portNumber, String pubkey) {
     	try {
 			socket = new DatagramSocket();
 		} catch (SocketException e) {
@@ -31,7 +31,7 @@ public class MyClient {
 		}
     	this.address = address;
     	this.portNumber = portNumber;
-    	this.publicKey = publicKey;
+    	this.publicKey = pubkey;
     }
  
     // send packets method

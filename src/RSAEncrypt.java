@@ -22,7 +22,7 @@ public class RSAEncrypt {
 	// first Base64 decode and generate the public key
 	// need X509EncodedKeySpec class to convert it again to RSA public key
 	// ***** currently not used : only needed if publickey is converted to base64 (String)
-	public static PublicKey getPublicKey(String base64PublicKey){
+	public static PublicKey getPublicKey(String base64PublicKey) {
         PublicKey publicKey = null;
         try{
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(base64PublicKey.getBytes()));
@@ -60,17 +60,17 @@ public class RSAEncrypt {
 
     // encryption method
     // takes the string to be enrypted and the Base64 encoded RSA key for encryption
-    public static byte[] encrypt(PublicKey publicKey, String data) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
+    public static byte[] encrypt(String publicKey, String data) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
         return cipher.doFinal(data.getBytes());
     }
 
     // decryption methods
     // decrypt method that accepts RSA encrypted string and Base64 encoded RSA private key for decryption
-    public static String decrypt(PrivateKey privateKey, String data) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public static String decrypt(String privateKey, String data) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
     	Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-    	cipher.init(Cipher.DECRYPT_MODE, privateKey);
+    	cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
     	return new String(cipher.doFinal(Base64.getDecoder().decode(data.getBytes())));
     }
 }

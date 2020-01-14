@@ -30,16 +30,16 @@ public class MyServer extends Thread {
     private ArrayList<SingleKnock> knockList = new ArrayList<>();
     private Logger logger = Logger.getLogger("MyLog");
     private FileHandler fh;
-	private PrivateKey privateKey;
+	private String privateKey;
     
     // open datagram socket on server with specisied port number
-    public MyServer(int pn, PrivateKey privateKey) {
+    public MyServer(int pn, String privkey) {
         try {
 			socket = new DatagramSocket(pn);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-        this.privateKey = privateKey;
+        this.privateKey = privkey;
     }
     
  
