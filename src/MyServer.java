@@ -2,11 +2,13 @@ package src;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.logging.FileHandler;
@@ -14,8 +16,12 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 //import org.apache.commons.net.ntp.NTPUDPClient;
 //import org.apache.commons.net.ntp.TimeStamp;
@@ -49,23 +55,22 @@ public class MyServer extends Thread {
     private static boolean running;
     private static byte[] buf = new byte[256];
     private static ArrayList<Integer> knockingSequence = new ArrayList<Integer>();
-    private ArrayList<Integer> connectionKnocks = new ArrayList<Integer>();
+    private static ArrayList<Integer> connectionKnocks = new ArrayList<Integer>();
     private final static ArrayList<Integer> confirmKnockingSequence =  new ArrayList<Integer>(Arrays.asList(5, 7000, 4000, 6543));
-    //private HashMap<AttemptKnockingSequence, ArrayList<SingleKnock>> hashKnock = new HashMap<AttemptKnockingSequence, ArrayList<SingleKnock>>();
-    private static HashMap<AttemptKnockingSequence, ArrayList<Integer>> hashKnock = new HashMap<AttemptKnockingSequence, ArrayList<Integer>>();
-    //private ArrayList<SingleKnock> knockList = new ArrayList<>();
-    private static ArrayList<Integer> knockList = new ArrayList<>();
+    private static HashMap<AttemptKnockingSequence, ArrayList<SingleKnock>> hashKnock = new HashMap<AttemptKnockingSequence, ArrayList<SingleKnock>>();
+    //private static HashMap<AttemptKnockingSequence, ArrayList<Integer>> hashKnock = new HashMap<AttemptKnockingSequence, ArrayList<Integer>>();
+    private static ArrayList<SingleKnock> knockList = new ArrayList<>();
+    //private static ArrayList<Integer> knockList = new ArrayList<>();
     private static Logger logger = Logger.getLogger("MyLog");
     private static FileHandler fh;
-    private static final String privKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJxGMiVOZk/6RDbbVhMCtvf/GmoFYwwEFUSMaFKHjo+dY1+Ro9FHZ1ckeuTesqE8JI0Shk8nueD8GfxAG0bytH18XSZZ815QMTR8mpAZmsGzDT+cSyOSDLw71DX7kgSBNVzVw4mzIQR4pDl1K/MulRcE9HGqOn+PUxXndCl23U2BAgMBAAECgYEAhaIZO4GhR/7w2iARqMwHfmZtRgA5RIsxTJ7sjrZQmEq0MYMvHMT8f644UQKGqg3uC5ytsX59GwE5j1Wafb8Jy3AOKDoChSeExGoDPcXTZArM7CAvXi653X4xkrvN02b8D01UZFTZAE/tSupN3Lfcj6r9zp0PWBkKhWA35bcjHOECQQDzoGKKpXA4UlKifCrwu5Lv8oWFoJTRHrGytJqauRlAC2DluAeHrsidIF05Uaiy8lg2eiwH8+KZ47QD17oC/Wy9AkEApDYP9SbG5kyNF/+bmKLpvR2scYRZY8m+KIq47U+UvfSE1++6OPrNey1+aKuem8ni2aKU9TZyPKzBk4TfuGQKFQJAeEiWfoeh+VzDyc9uT/78VBW0UL5w2zLBX08GCiAbVGCJzcFnjlkAWXuSK2ui0/8NCJCXTrHeDka7KS6Ie1NuLQJAELPXB658CKy8pTZAk1PuxmegRKObnATHLMR/btPrYy7d3EDsBiOshtznwKnEJkBwrIZW9GInWHiR7/lR8CVsyQJALACfKVLOTsMt2EM+oVHejcvhxcKHPVmGCTVd+wyh82dkRFY7DUqW4JfMgLj0+yRfG+BGigixFB6AW6k3vRyQrA==";
-    private static String operatingSystem = System.getProperty("os.name");
+    private static final String privKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDN+myZccwm9sll/Z4B56xBfNsAGX1ykwVP6+St2gSxForwZqmuM6xkLfZozgdmKdb9LaOZc14oGGd88aw2BPd09FMxosf1UCHYawZWaz3w8u9VM8GZkWWijmdNpw+pBaCbyqQ+hl9Q7K4Sqh2x+R/QJArkjzifQayisSY01sOUt4Dro5yA+2j/YsEypkA9PAY9qccMSlwQHXUiRyx0ceYQEu+7KNK9Cc5GkklzfdJT8vRfJH8xmd3CyBQAfGPxK8niR+Ail0FwFmKIcRlWMU52t71iFDh1NtAMFY4NdSx9c2ltYEQKKFBsLxp3B21VADagsOisemdrXRXcPOJxCschAgMBAAECggEATLM3xVvOvaOgE06BjAwM5MXtdvgG8qc0jzI0EVjh7l+KlUJlZOzxAMzsuNIfhzeFSvm3tehz41JTFv+XNPZcfzyLzivjccHJGKGh1oRQqGyOGpgPO3Qc+I82gH/5IONrjxfCWVYIIEZB+8lFDYTLB+Kj+8ApQYRfGKYGqB5g7ftL/YNmaUI1ntnIpssXrq08iHbEVA+jDrCvQj9glaJiF4Fxylvzd6Qep2Kh/7sYvEHmPPEaEOJhXOc6uxwSiMGU2eexjNxrQa3P5dv2rEDHgZArNoye5ZVVQpGqF5GagmY7sW5tHm9VkwRCVZo6s3uk7S/OWZmZAZPuuMkHpnU8kQKBgQDr/bDGp503zUfSfUuSlg09ARw0CsUV8vzBAy4tibW6mB1BZc34OZ6bvzww/+yCr6t9oIJKCSp2u0O+g6waYQtxWkrAO4crC+D12mVHLCHuTY2Y6VGw3UfZa3dkf/rYHiuon2KxRvMSirdmfEEJpO9qZx9AvXIntQWckPTzgE/6kwKBgQDfcUpzBo1+RAdM3IGB9Cua+nkMHaJnUmuKVxZH1ViZzfD3xBymMW69bCyqiFOVIoKaC6NEXmQ3qeWvjUZN9cuG8dlWkjLJlP9SNNMARsRE52qLHsG3nW2HI8wPW0EoZdF8qiJYgza10hdDlxz+CregtAsi0h9B/J2LXxbAU+oj+wKBgFvDzlWxH8VvIZqL9jMN/h/Wqqzh8zlRv08eeXpjrjLcq6OefrUjUrWlazZyjflTbg/vtjorzkNVFkai1O19BwIQ5jhR7YGjoNp5DiDa3GbZ6VGoiIeJxEKbM1X1Hgmj0b5EHBBrUmHHZwGHF5M0e5SYfOKjyBwAnCoBg/6byn3ZAoGAEZpQPi2W+gqL9K8ueLlusf/nh1/SSoeAt15TAAe7uioyQKKvixw72CpsfmbNBuO4HECsdRdml8gHs0PS9RNXHGNzNtG/tIfLcYN91/i7P55nk1wx8LAzT8EvM0qCIJec4FBa8lQr/Dj34jhGbXEUtFFayzx4f+9RzggIt9Akkv8CgYEA5EVrvJx5aUBpCD5ldmVOrAXtSNcgiaiSJJu48N6kgPK2iVWkYsLgkpdez1pVG1yl8t9p6UEjgXnFXSXwJB8kvRmaFZ/ef+xk08OSRBWVhYWivl5LoMwcJVje7RQeSiciVyuDgRT3NYDFjJCG4kLX0fbbsulHdWh71CdP2m2cyuc=";
+    		private static String operatingSystem = System.getProperty("os.name");
     
     // open datagram socket on server with specisied port number
     public static void main(String[] args) throws IOException, InterruptedException {
-    	String tcpDumpCmd = "/usr/sbin/tcpdump -l -n udp port '(5 or 7000 or 4000 or 6543)'";
+    	String tcpDumpCmd = "/usr/sbin/tcpdump -A -l -n udp port '(5 or 7000 or 4000 or 6543)'";
 		runTCPDUmp(tcpDumpCmd, true);
     }
-    
  
     public static void runTCPDUmp(String crunchifyCmd, boolean waitForResult) throws IOException, InterruptedException {
     	
@@ -112,7 +117,6 @@ public class MyServer extends Thread {
 				while ((line = inputStreamReader.readLine()) != null) {
 					
 					String[] tcpArr = line.split(" ");
-					
 					int srcIndex = tcpArr[2].toString().lastIndexOf(".");
 					String srcIP = tcpArr[2].toString().substring(0,srcIndex);				
 					String srcPort = tcpArr[2].toString().substring(srcIndex+1);
@@ -138,31 +142,45 @@ public class MyServer extends Thread {
 		        		hashKnock.put(aks, knockList);
 		        	}
 		        	
+		        	String[] packetData = inputStreamReader.readLine().split(" ");
+		        	
+		        	String aesKey = new String(packetData[1].toString().getBytes(), 0, packetData[1].toString().getBytes().length);
+		        	byte[] decryptKey = RSAEncrypt.decrypt(privKey, aesKey);
+					SecretKey origionalKey = new SecretKeySpec(decryptKey, 0, decryptKey.length, "AES");
+					
+					Cipher aesCipher = Cipher.getInstance("AES");
+					aesCipher.init(Cipher.DECRYPT_MODE, origionalKey);
+					byte[] bytePlainText = aesCipher.doFinal(Base64.getDecoder().decode(packetData[0].toString().substring(28)));
+					String plainText = new String(bytePlainText);
+					String[] values = plainText.split(",");
+					logger.info("Single Knock Attempt ClientIP - " + aks.getAddress() + ": ClientPort - " 
+							+ aks.getPort() + ": Port Knock Entered - " + destPort);
+		        	
 		        	// get hashmap array of single knocks
-					ArrayList<Integer> arr = hashKnock.get(aks);			
+					ArrayList<SingleKnock> arr = hashKnock.get(aks);			
 
 					// when hashmap array of single knocks is 4 or less
 		            if (arr.size() < 5) {
 		            	
 		            	// add incoming knock to the attempt
-		            	//SingleKnock single = new SingleKnock(Integer.parseInt(values[0]), Long.parseLong(values[1]), Integer.parseInt(values[2]));
-		            	hashKnock.computeIfAbsent(aks, k -> new ArrayList<>()).add(Integer.parseInt(destPort));
+		            	SingleKnock single = new SingleKnock(Integer.parseInt(destPort), Long.parseLong(values[0]), Integer.parseInt(values[1]));
+		            	hashKnock.computeIfAbsent(aks, k -> new ArrayList<>()).add(single);
 	
 		            	// if array size is now full
 		            	if(arr.size() == 4) {
 		            		
-		            		System.out.println(hashKnock.get(aks));
+		            		Collections.sort(hashKnock.get(aks));
 		            		
 		            		// create arraylist of the knocking and connection sequence
-		            		for (Integer sk : hashKnock.get(aks)) {
-		            			knockingSequence.add(sk);
-		            			//connectionKnocks.add(sk.getConnectionKnock());
+		            		for (SingleKnock sk : hashKnock.get(aks)) {
+		            			knockingSequence.add(sk.getPortKnock());
+		            			connectionKnocks.add(sk.getConnectionKnock());
 		            		}
 		            		
 		            		// if knocking sequence matches, connection allowed
 		            		if (knockingSequence.equals(confirmKnockingSequence)) {
 		            			logger.info("Correct Knock Sequence: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
-		            			//logger.info("Submitting connection ports for allowed connection: Connection Knocks - " + connectionKnocks);
+		            			logger.info("Submitting connection ports for allowed connection: Connection Knocks - " + connectionKnocks);
 		            			//acceptClientConnection(connectionKnocks);
 		            			makeConnection(aks.getAddress(), aks.getPort(), 22);
 		            		} else {
@@ -173,7 +191,7 @@ public class MyServer extends Thread {
 		            		// clear arraylists
 		            		knockingSequence.clear();
 		            		hashKnock.get(aks).clear();
-		            		//connectionKnocks.clear();
+		            		connectionKnocks.clear();
 		            	}
 		            }
 				}
@@ -197,22 +215,22 @@ public class MyServer extends Thread {
 		
 		Process connUDP, connTCP, connICMP;
 		Process dropUDP, dropTCP, dropICMP;
+		String address = srcAddress.getHostAddress().toString();
 		
-    	String acceptICMPConnectionCmd = "sudo iptables -A INPUT -p icmp -s " + srcAddress.getHostAddress().toString() + " -j ACCEPT";
-    	String acceptTCPConnectionCmd = "sudo iptables -A INPUT -p tcp -s " + srcAddress.getHostAddress().toString() + " --dport " + connectPort + " -j ACCEPT";
-    	String acceptUDPConnectionCmd = "sudo iptables -A INPUT -p udp -s " + srcAddress.getHostAddress().toString() + " --dport " + connectPort + " -j ACCEPT";
+    	String acceptICMPConnectionCmd = "sudo iptables -I INPUT -p icmp -s " + address + " -j ACCEPT";
+    	String acceptTCPConnectionCmd = "sudo iptables -I INPUT -p tcp -s " + address + " --dport " + connectPort + " -j ACCEPT";
+    	String acceptUDPConnectionCmd = "sudo iptables -I INPUT -p udp -s " + address + " --dport " + connectPort + " -j ACCEPT";
 
-    	String dropICMPConnectionCmd = "sudo iptables -D INPUT -p icmp -s " + srcAddress.getHostAddress().toString() + " -j ACCEPT";
-    	String dropTCPConnectionCmd = "sudo iptables -D INPUT -p tcp -s " + srcAddress.getHostAddress().toString() + " --dport " + connectPort + " -j ACCEPT";
-    	String dropUDPConnectionCmd = "sudo iptables -D INPUT -p udp -s " + srcAddress.getHostAddress().toString() + " --dport " + connectPort + " -j ACCEPT";
+    	String dropICMPConnectionCmd = "sudo iptables -D INPUT -p icmp -s " + address+ " -j ACCEPT";
+    	String dropTCPConnectionCmd = "sudo iptables -D INPUT -p tcp -s " + address + " --dport " + connectPort + " -j ACCEPT";
+    	String dropUDPConnectionCmd = "sudo iptables -D INPUT -p udp -s " + address + " --dport " + connectPort + " -j ACCEPT";
 
     	try {
 			connUDP = Runtime.getRuntime().exec(acceptUDPConnectionCmd);
 			connTCP = Runtime.getRuntime().exec(acceptTCPConnectionCmd);
 			connICMP = Runtime.getRuntime().exec(acceptICMPConnectionCmd);
-			//con.waitFor();
 			
-			Thread.sleep(30000);
+			Thread.sleep(100000);
 			
 			dropUDP = Runtime.getRuntime().exec(dropUDPConnectionCmd);
 			dropTCP = Runtime.getRuntime().exec(dropTCPConnectionCmd);
@@ -348,40 +366,40 @@ public class MyServer extends Thread {
 //    }
 
 
-	private void acceptClientConnection(ArrayList<Integer> connectionKnocks) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
-		
-		// loop through each integer in arraylist that represents a connection to server
-		for(int connectionPort : connectionKnocks) {
-			try {
-				connectionSocket = new DatagramSocket(connectionPort);
-			} catch (SocketException e) {
-				e.printStackTrace();
-			}
-			// get current time in seconds
-			long start = System.currentTimeMillis()/1000;
-			//allow connection for 10 seconds before moving to next connection port
-			while(System.currentTimeMillis()/1000 - start <= 4) {
-	
-				// create new packet
-		        DatagramPacket packet = new DatagramPacket(buf, buf.length);
-		        try {
-		        	// recieve new incoming packet
-					connectionSocket.receive(packet);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-        
-		        // address and port number of incoming packet
-		        //InetAddress clientAddress = packet.getAddress();
-		        //int clientPort = packet.getPort();
-		        
-		        // recieve message, decrype and split
-            	String receive = new String(packet.getData(), 0, packet.getLength());
-				String received = RSAEncrypt.decrypt(privKey, receive);
-				
-				logger.info("Server recieved packet with information - " + received);
-			}
-			connectionSocket.close();
-		}
-	}
+//	private void acceptClientConnection(ArrayList<Integer> connectionKnocks) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+//		
+//		// loop through each integer in arraylist that represents a connection to server
+//		for(int connectionPort : connectionKnocks) {
+//			try {
+//				connectionSocket = new DatagramSocket(connectionPort);
+//			} catch (SocketException e) {
+//				e.printStackTrace();
+//			}
+//			// get current time in seconds
+//			long start = System.currentTimeMillis()/1000;
+//			//allow connection for 10 seconds before moving to next connection port
+//			while(System.currentTimeMillis()/1000 - start <= 4) {
+//	
+//				// create new packet
+//		        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+//		        try {
+//		        	// recieve new incoming packet
+//					connectionSocket.receive(packet);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//        
+//		        // address and port number of incoming packet
+//		        //InetAddress clientAddress = packet.getAddress();
+//		        //int clientPort = packet.getPort();
+//		        
+//		        // recieve message, decrype and split
+//            	String receive = new String(packet.getData(), 0, packet.getLength());
+//				String received = RSAEncrypt.decrypt(privKey, receive);
+//				
+//				logger.info("Server recieved packet with information - " + received);
+//			}
+//			connectionSocket.close();
+//		}
+//	}
 }

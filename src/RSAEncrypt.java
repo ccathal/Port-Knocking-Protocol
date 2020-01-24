@@ -14,6 +14,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 public class RSAEncrypt {
 	
@@ -60,17 +61,17 @@ public class RSAEncrypt {
 
     // encryption method
     // takes the string to be enrypted and the Base64 encoded RSA key for encryption
-    public static byte[] encrypt(String publicKey, String data) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
+    public static byte[] encrypt(String publicKey, SecretKey secKey) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
-        return cipher.doFinal(data.getBytes());
+        return cipher.doFinal(secKey.getEncoded());
     }
 
     // decryption methods
     // decrypt method that accepts RSA encrypted string and Base64 encoded RSA private key for decryption
-    public static String decrypt(String privateKey, String data) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public static byte[] decrypt(String privateKey, String data) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
     	Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
     	cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
-    	return new String(cipher.doFinal(Base64.getDecoder().decode(data.getBytes())));
+    	return cipher.doFinal(Base64.getDecoder().decode(data.getBytes()));
     }
 }
