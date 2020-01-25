@@ -17,60 +17,64 @@ import org.junit.*;
 
 public class UDPTest {
     private static MyClient client;
-    private static final int portNumber = 4445;
-    private static final String address = "localhost";
-    private static final String pubKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCcRjIlTmZP+kQ221YTArb3/xpqBWMMBBVEjGhSh46PnWNfkaPRR2dXJHrk3rKhPCSNEoZPJ7ng/Bn8QBtG8rR9fF0mWfNeUDE0fJqQGZrBsw0/nEsjkgy8O9Q1+5IEgTVc1cOJsyEEeKQ5dSvzLpUXBPRxqjp/j1MV53Qpdt1NgQIDAQAB";
-    private static final String privKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJxGMiVOZk/6RDbbVhMCtvf/GmoFYwwEFUSMaFKHjo+dY1+Ro9FHZ1ckeuTesqE8JI0Shk8nueD8GfxAG0bytH18XSZZ815QMTR8mpAZmsGzDT+cSyOSDLw71DX7kgSBNVzVw4mzIQR4pDl1K/MulRcE9HGqOn+PUxXndCl23U2BAgMBAAECgYEAhaIZO4GhR/7w2iARqMwHfmZtRgA5RIsxTJ7sjrZQmEq0MYMvHMT8f644UQKGqg3uC5ytsX59GwE5j1Wafb8Jy3AOKDoChSeExGoDPcXTZArM7CAvXi653X4xkrvN02b8D01UZFTZAE/tSupN3Lfcj6r9zp0PWBkKhWA35bcjHOECQQDzoGKKpXA4UlKifCrwu5Lv8oWFoJTRHrGytJqauRlAC2DluAeHrsidIF05Uaiy8lg2eiwH8+KZ47QD17oC/Wy9AkEApDYP9SbG5kyNF/+bmKLpvR2scYRZY8m+KIq47U+UvfSE1++6OPrNey1+aKuem8ni2aKU9TZyPKzBk4TfuGQKFQJAeEiWfoeh+VzDyc9uT/78VBW0UL5w2zLBX08GCiAbVGCJzcFnjlkAWXuSK2ui0/8NCJCXTrHeDka7KS6Ie1NuLQJAELPXB658CKy8pTZAk1PuxmegRKObnATHLMR/btPrYy7d3EDsBiOshtznwKnEJkBwrIZW9GInWHiR7/lR8CVsyQJALACfKVLOTsMt2EM+oVHejcvhxcKHPVmGCTVd+wyh82dkRFY7DUqW4JfMgLj0+yRfG+BGigixFB6AW6k3vRyQrA==";
+    private static final String address = "192.168.56.101";
+    private static final String pubKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzfpsmXHMJvbJZf2eAeesQXzbABl9cpMFT+vkrdoEsRaK8GaprjOsZC32aM4HZinW/S2jmXNeKBhnfPGsNgT3dPRTMaLH9VAh2GsGVms98PLvVTPBmZFloo5nTacPqQWgm8qkPoZfUOyuEqodsfkf0CQK5I84n0GsorEmNNbDlLeA66OcgPto/2LBMqZAPTwGPanHDEpcEB11IkcsdHHmEBLvuyjSvQnORpJJc33SU/L0XyR/MZndwsgUAHxj8SvJ4kfgIpdBcBZiiHEZVjFOdre9YhQ4dTbQDBWODXUsfXNpbWBECihQbC8adwdtVQA2oLDorHpna10V3DzicQrHIQIDAQAB";
+    private static final String privKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDN+myZccwm9sll/Z4B56xBfNsAGX1ykwVP6+St2gSxForwZqmuM6xkLfZozgdmKdb9LaOZc14oGGd88aw2BPd09FMxosf1UCHYawZWaz3w8u9VM8GZkWWijmdNpw+pBaCbyqQ+hl9Q7K4Sqh2x+R/QJArkjzifQayisSY01sOUt4Dro5yA+2j/YsEypkA9PAY9qccMSlwQHXUiRyx0ceYQEu+7KNK9Cc5GkklzfdJT8vRfJH8xmd3CyBQAfGPxK8niR+Ail0FwFmKIcRlWMU52t71iFDh1NtAMFY4NdSx9c2ltYEQKKFBsLxp3B21VADagsOisemdrXRXcPOJxCschAgMBAAECggEATLM3xVvOvaOgE06BjAwM5MXtdvgG8qc0jzI0EVjh7l+KlUJlZOzxAMzsuNIfhzeFSvm3tehz41JTFv+XNPZcfzyLzivjccHJGKGh1oRQqGyOGpgPO3Qc+I82gH/5IONrjxfCWVYIIEZB+8lFDYTLB+Kj+8ApQYRfGKYGqB5g7ftL/YNmaUI1ntnIpssXrq08iHbEVA+jDrCvQj9glaJiF4Fxylvzd6Qep2Kh/7sYvEHmPPEaEOJhXOc6uxwSiMGU2eexjNxrQa3P5dv2rEDHgZArNoye5ZVVQpGqF5GagmY7sW5tHm9VkwRCVZo6s3uk7S/OWZmZAZPuuMkHpnU8kQKBgQDr/bDGp503zUfSfUuSlg09ARw0CsUV8vzBAy4tibW6mB1BZc34OZ6bvzww/+yCr6t9oIJKCSp2u0O+g6waYQtxWkrAO4crC+D12mVHLCHuTY2Y6VGw3UfZa3dkf/rYHiuon2KxRvMSirdmfEEJpO9qZx9AvXIntQWckPTzgE/6kwKBgQDfcUpzBo1+RAdM3IGB9Cua+nkMHaJnUmuKVxZH1ViZzfD3xBymMW69bCyqiFOVIoKaC6NEXmQ3qeWvjUZN9cuG8dlWkjLJlP9SNNMARsRE52qLHsG3nW2HI8wPW0EoZdF8qiJYgza10hdDlxz+CregtAsi0h9B/J2LXxbAU+oj+wKBgFvDzlWxH8VvIZqL9jMN/h/Wqqzh8zlRv08eeXpjrjLcq6OefrUjUrWlazZyjflTbg/vtjorzkNVFkai1O19BwIQ5jhR7YGjoNp5DiDa3GbZ6VGoiIeJxEKbM1X1Hgmj0b5EHBBrUmHHZwGHF5M0e5SYfOKjyBwAnCoBg/6byn3ZAoGAEZpQPi2W+gqL9K8ueLlusf/nh1/SSoeAt15TAAe7uioyQKKvixw72CpsfmbNBuO4HECsdRdml8gHs0PS9RNXHGNzNtG/tIfLcYN91/i7P55nk1wx8LAzT8EvM0qCIJec4FBa8lQr/Dj34jhGbXEUtFFayzx4f+9RzggIt9Akkv8CgYEA5EVrvJx5aUBpCD5ldmVOrAXtSNcgiaiSJJu48N6kgPK2iVWkYsLgkpdez1pVG1yl8t9p6UEjgXnFXSXwJB8kvRmaFZ/ef+xk08OSRBWVhYWivl5LoMwcJVje7RQeSiciVyuDgRT3NYDFjJCG4kLX0fbbsulHdWh71CdP2m2cyuc=";
     
-//    @BeforeClass
-//    public static void setup() throws NoSuchAlgorithmException, UnknownHostException {
-//    	//RSAKeyPairGenerator keyPairGenerator = new RSAKeyPairGenerator();
-//    	
-//    	// Base64 encoding the public and private keys to ease the sharing of these keys
-//    	//String pubKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded());
-//    	//String privKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded());
-//
-//        //PublicKey pubKey = keyPairGenerator.getPublicKey();
-//        //PrivateKey privKey = keyPairGenerator.getPrivateKey();
-//    	//InetAddress ipAddress = InetAddress.getByName(address);
-//    	
+    @BeforeClass
+    public static void setup() throws NoSuchAlgorithmException, UnknownHostException {
+    	//RSAKeyPairGenerator keyPairGenerator = new RSAKeyPairGenerator();
+    	
+    	// Base64 encoding the public and private keys to ease the sharing of these keys
+    	//String pubKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded());
+    	//String privKey = Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded());
+
+        //PublicKey pubKey = keyPairGenerator.getPublicKey();
+        //PrivateKey privKey = keyPairGenerator.getPrivateKey();
+    	InetAddress ipAddress = InetAddress.getByName(address);
+    	
 //    	new MyServer(portNumber, privKey).start();
-//    	//client = new MyClient(ipAddress, portNumber, pubKey);
-//    }
+    	client = new MyClient(ipAddress, pubKey);
+    }
     
-//    @Test
-//    public void testCorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
-//    	String[] correctKnockingSequence = {"5", "7000", "4000", "6543"};       
-//    	ArrayList<Integer> correctConnect = client.sendEcho(correctKnockingSequence);
-//    	client.makeConnection(correctConnect);
-//    }
-//    
-//    @Test
-//    public void testIncorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
-//    	String[] incorrectKnockingSequence = {"5", "7000", "4010", "6543"};       
-//    	ArrayList<Integer> incorrectConnect = client.sendEcho(incorrectKnockingSequence);
-//    	client.makeConnection(incorrectConnect);
-//    }
-//      
-//    @Test
-//    public void testFragmentedKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
-//    	String[] knockingSequenceP1 = {"5"};
-//    	String[] knockingSequenceP2 = {"7000"};
-//    	String[] knockingSequenceP3 = {"4000", "6543"};
-//    	
-//    	ArrayList<Integer> connect1 = client.sendEcho(knockingSequenceP1);
-//    	ArrayList<Integer> connect2 = client.sendEcho(knockingSequenceP2);
-//    	ArrayList<Integer> connect3 = client.sendEcho(knockingSequenceP3);
-//        
-//        // want to make a connection attempt to the server using the connection knocks
-//    	connect1.addAll(connect2);
-//    	connect1.addAll(connect3);
-//    	
-//    	client.makeConnection(connect1);
-//    }
+    @Test
+    public void testCorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
+    	String[] correctKnockingSequence = {"5", "7000", "4000", "6543"};       
+    	ArrayList<Integer> correctConnect = client.sendEcho(correctKnockingSequence);
+    	//client.makeConnection(22);
+    }
     
-    /* This block of code is used to test late delivery packets
-     * MyClient.java method needs to be slightly modified to test this code
+    /*
+    @Test
+    public void testIncorrectKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {	
+    	String[] incorrectKnockingSequence = {"5", "7000", "4010", "6543"};       
+    	ArrayList<Integer> incorrectConnect = client.sendEcho(incorrectKnockingSequence);
+    	client.makeConnection(incorrectConnect);
+    }
+    */
+    
+    /*
+    @Test
+    public void testFragmentedKnockSequence() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
+    	String[] knockingSequenceP1 = {"5"};
+    	String[] knockingSequenceP2 = {"7000"};
+    	String[] knockingSequenceP3 = {"4000", "6543"};
+    	
+    	ArrayList<Integer> connect1 = client.sendEcho(knockingSequenceP1);
+    	ArrayList<Integer> connect2 = client.sendEcho(knockingSequenceP2);
+    	ArrayList<Integer> connect3 = client.sendEcho(knockingSequenceP3);
+        
+        // want to make a connection attempt to the server using the connection knocks
+    	connect1.addAll(connect2);
+    	connect1.addAll(connect3);
+    	
+    	client.makeConnection(connect1);
+    }
+    */
+    
+    /* 
+    // This block of code is used to test late delivery packets
+    // MyClient.java method needs to be slightly modified to test this code
     @Test
     public void testLateDeliveryPacket() throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InterruptedException {
         Object[] knockingSequenceP1 = {"5", 123456781L};
@@ -85,8 +89,8 @@ public class UDPTest {
     }
     */
  
-//    @AfterClass
-//    public static void tearDown() {
-//    	// ToDo
-//    }
+    @AfterClass
+    public static void tearDown() {
+    	// ToDo
+    }
 }

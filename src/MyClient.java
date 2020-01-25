@@ -1,7 +1,6 @@
 package src;
 
 import java.io.*;
-
 import java.net.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -11,30 +10,28 @@ import java.util.Base64;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-
-//import org.apache.commons.net.ntp.NTPUDPClient;
-//import org.apache.commons.net.ntp.TimeStamp;
+import javax.crypto.SecretKey;
 
 public class MyClient {
 	
 	private DatagramSocket socket;
     private InetAddress address;
-    private int portNumber;
     private byte[] buf;
     private Random r = new Random();
     private String publicKey;
 
     // open datagram socket on client side with localhost address
-    public MyClient(InetAddress address, int portNumber, String pubkey) {
+    public MyClient(InetAddress address, String pubkey) {
     	try {
 			socket = new DatagramSocket();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
     	this.address = address;
-    	this.portNumber = portNumber;
     	this.publicKey = pubkey;
     }
  
@@ -50,12 +47,28 @@ public class MyClient {
     		// get timestamp
     		long time = System.currentTimeMillis();
     		
+    		// message to be encrypted
+    		String plainText = time + "," + connectionPorts.get(i);
+    		
+    		// generate aes key and encrypt message
+    		KeyGenerator generator = KeyGenerator.getInstance("AES");
+    		generator.init(128); // The AES key size in number of bits
+    		SecretKey secKey = generator.generateKey();
+    		
+    		// rsa encrypt the key
+    		Cipher aesCipher = Cipher.getInstance("AES");
+    		aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+    		String encryptedKey = Base64.getEncoder().encodeToString(aesCipher.doFinal(plainText.getBytes()));
+    		
     		// encrypt string using RSA
-            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(publicKey, knockingSequence[i] + "," + time + "," + connectionPorts.get(i)));
-
+            String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(publicKey, secKey));
+            
+            String packetData = encryptedKey + " " + encryptedString;
+            
             // send packet
-            buf = encryptedString.getBytes();
-    	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portNumber);
+            buf = packetData.getBytes();
+            // System.out.println(buf.toString());
+    	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Integer.parseInt(knockingSequence[i]));
     	    try {
     	    	socket.send(packet);
 			} catch (IOException e) {
@@ -74,18 +87,20 @@ public class MyClient {
 		return sock;
     }
 
-	public void makeConnection(ArrayList<Integer> connect) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
+    /** 
+    // method for making a conection to the server after sending the knock sequence
+	public void makeConnection(int i) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
 		// loop through each integer in arraylist that represents a connection to server
-		for(int connectionPort : connect) {
+
 			// get current time in seconds
 			long start = System.currentTimeMillis()/1000;
 			//allow connection for 10 seconds before moving to next connection port
-			while(System.currentTimeMillis()/1000 - start <= 4) {
-				String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(publicKey, "Hello server from client port - " + connectionPort));
+			while(System.currentTimeMillis()/1000 - start <= 8) {
+				String encryptedString = Base64.getEncoder().encodeToString(RSAEncrypt.encrypt(publicKey, "Hello server from client  to your port - " + i));
 
 	            // send packets to the server connection port
 	            buf = encryptedString.getBytes();
-	    	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, connectionPort);
+	    	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, i);
 	    	    try {
 	    	    	Thread.sleep(500);
 	    	    	socket.send(packet); 	
@@ -93,6 +108,6 @@ public class MyClient {
 					e.printStackTrace();
 				}
 			}
-		}
-	}
+		
+	}*/
 }
