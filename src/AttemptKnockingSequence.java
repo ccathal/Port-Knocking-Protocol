@@ -8,10 +8,19 @@ public class AttemptKnockingSequence {
 	
 	private InetAddress address;
 	private int port;
+	private boolean submittedConnection;
+	private boolean renewingConnection;
 
 	public AttemptKnockingSequence(InetAddress address, int port) {
-		this.port = port;
-		this.address = address;
+		if(address.equals(null) || port == 0) {
+			throw new IllegalArgumentException();
+		} else {
+			this.address = address;
+			this.port = port;
+			this.submittedConnection = false;
+			this.renewingConnection = false;
+		}
+		
 	}
 	
 	public InetAddress getAddress() {
@@ -34,10 +43,26 @@ public class AttemptKnockingSequence {
 	    return Objects.equals(address, aks.address) && port == aks.port;
 	}
 	
-	// override hashcode to return hash of object class instance if has been proviously created
+	// override hashcode to return hash of object class instance if has been previously created
 	@Override
 	public int hashCode() {
 	    return Objects.hash(address, port);
+	}
+	
+	public synchronized boolean getSubmittedConnection() {
+		return this.submittedConnection;
+	}
+	
+	public synchronized void setSubmittedConnection(boolean connection) {
+		this.submittedConnection = connection;
+	}
+	
+	public boolean getRenewingConnection() {
+		return this.renewingConnection;
+	}
+	
+	public void setRenewingConnection(boolean connection) {
+		this.renewingConnection = connection;
 	}
 	
         
