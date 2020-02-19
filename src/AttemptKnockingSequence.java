@@ -8,17 +8,18 @@ public class AttemptKnockingSequence {
 	
 	private InetAddress address;
 	private int port;
-	private boolean submittedConnection;
-	private boolean renewingConnection;
+	// static variables to check if associated attempt knocking sequence 
+	// has a submitted connection or attempting a renewing connection
+	private static boolean submittedConnection;
+	private static boolean renewingConnection;
 
+	// constructor identified by client ip address and port number
 	public AttemptKnockingSequence(InetAddress address, int port) {
 		if(address.equals(null) || port == 0) {
 			throw new IllegalArgumentException();
 		} else {
 			this.address = address;
 			this.port = port;
-			this.submittedConnection = false;
-			this.renewingConnection = false;
 		}
 		
 	}
@@ -30,7 +31,24 @@ public class AttemptKnockingSequence {
 	public int getPort() {
 		return port;
 	}
-
+	
+	// synchronized as accessed by both main thread and submitted connection thread
+	public synchronized boolean getSubmittedConnection() {
+		return submittedConnection;
+	}
+	
+	public synchronized void setSubmittedConnection(boolean connection) {
+		submittedConnection = connection;
+	}
+	
+	public boolean getRenewingConnection() {
+		return renewingConnection;
+	}
+	
+	public void setRenewingConnection(boolean connection) {
+		renewingConnection = connection;
+	}
+	
 	// override equals method to check equality (by ip and port) of class object instances
 	@Override
 	public boolean equals(Object obj) {
@@ -48,22 +66,5 @@ public class AttemptKnockingSequence {
 	public int hashCode() {
 	    return Objects.hash(address, port);
 	}
-	
-	public synchronized boolean getSubmittedConnection() {
-		return this.submittedConnection;
-	}
-	
-	public synchronized void setSubmittedConnection(boolean connection) {
-		this.submittedConnection = connection;
-	}
-	
-	public boolean getRenewingConnection() {
-		return this.renewingConnection;
-	}
-	
-	public void setRenewingConnection(boolean connection) {
-		this.renewingConnection = connection;
-	}
-	
         
 }
