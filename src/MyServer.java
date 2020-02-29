@@ -13,24 +13,33 @@ import java.util.logging.SimpleFormatter;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.swing.JFrame;
 
 public class MyServer extends Thread {
 	
-	private final int confirmKnockingPort = 23;
-    private final ArrayList<Integer> confirmKnockingSequence =  new ArrayList<Integer>(Arrays.asList(5, 7000, 4000, 6543));
+	private int confirmKnockingPort;
+    private ArrayList<Integer> confirmKnockingSequence =  new ArrayList<Integer>();
+    private String tcpDumpCommand;
     private FileHandler fh;
     private Logger logger = Logger.getLogger("MyLog");
     private HashMap<AttemptKnockingSequence, ArrayList<SingleKnock>> hashKnock = new HashMap<AttemptKnockingSequence, ArrayList<SingleKnock>>();
     private final String privKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDN+myZccwm9sll/Z4B56xBfNsAGX1ykwVP6+St2gSxForwZqmuM6xkLfZozgdmKdb9LaOZc14oGGd88aw2BPd09FMxosf1UCHYawZWaz3w8u9VM8GZkWWijmdNpw+pBaCbyqQ+hl9Q7K4Sqh2x+R/QJArkjzifQayisSY01sOUt4Dro5yA+2j/YsEypkA9PAY9qccMSlwQHXUiRyx0ceYQEu+7KNK9Cc5GkklzfdJT8vRfJH8xmd3CyBQAfGPxK8niR+Ail0FwFmKIcRlWMU52t71iFDh1NtAMFY4NdSx9c2ltYEQKKFBsLxp3B21VADagsOisemdrXRXcPOJxCschAgMBAAECggEATLM3xVvOvaOgE06BjAwM5MXtdvgG8qc0jzI0EVjh7l+KlUJlZOzxAMzsuNIfhzeFSvm3tehz41JTFv+XNPZcfzyLzivjccHJGKGh1oRQqGyOGpgPO3Qc+I82gH/5IONrjxfCWVYIIEZB+8lFDYTLB+Kj+8ApQYRfGKYGqB5g7ftL/YNmaUI1ntnIpssXrq08iHbEVA+jDrCvQj9glaJiF4Fxylvzd6Qep2Kh/7sYvEHmPPEaEOJhXOc6uxwSiMGU2eexjNxrQa3P5dv2rEDHgZArNoye5ZVVQpGqF5GagmY7sW5tHm9VkwRCVZo6s3uk7S/OWZmZAZPuuMkHpnU8kQKBgQDr/bDGp503zUfSfUuSlg09ARw0CsUV8vzBAy4tibW6mB1BZc34OZ6bvzww/+yCr6t9oIJKCSp2u0O+g6waYQtxWkrAO4crC+D12mVHLCHuTY2Y6VGw3UfZa3dkf/rYHiuon2KxRvMSirdmfEEJpO9qZx9AvXIntQWckPTzgE/6kwKBgQDfcUpzBo1+RAdM3IGB9Cua+nkMHaJnUmuKVxZH1ViZzfD3xBymMW69bCyqiFOVIoKaC6NEXmQ3qeWvjUZN9cuG8dlWkjLJlP9SNNMARsRE52qLHsG3nW2HI8wPW0EoZdF8qiJYgza10hdDlxz+CregtAsi0h9B/J2LXxbAU+oj+wKBgFvDzlWxH8VvIZqL9jMN/h/Wqqzh8zlRv08eeXpjrjLcq6OefrUjUrWlazZyjflTbg/vtjorzkNVFkai1O19BwIQ5jhR7YGjoNp5DiDa3GbZ6VGoiIeJxEKbM1X1Hgmj0b5EHBBrUmHHZwGHF5M0e5SYfOKjyBwAnCoBg/6byn3ZAoGAEZpQPi2W+gqL9K8ueLlusf/nh1/SSoeAt15TAAe7uioyQKKvixw72CpsfmbNBuO4HECsdRdml8gHs0PS9RNXHGNzNtG/tIfLcYN91/i7P55nk1wx8LAzT8EvM0qCIJec4FBa8lQr/Dj34jhGbXEUtFFayzx4f+9RzggIt9Akkv8CgYEA5EVrvJx5aUBpCD5ldmVOrAXtSNcgiaiSJJu48N6kgPK2iVWkYsLgkpdez1pVG1yl8t9p6UEjgXnFXSXwJB8kvRmaFZ/ef+xk08OSRBWVhYWivl5LoMwcJVje7RQeSiciVyuDgRT3NYDFjJCG4kLX0fbbsulHdWh71CdP2m2cyuc=";
     
-    // open datagram socket on server with specific port number
-    public static void main(String[] args) throws IOException, InterruptedException {
-    	String tcpDumpCommand = "/usr/sbin/tcpdump -A -l -n udp port '(5 or 7000 or 4000 or 6543)'";
-    	MyServer server = new MyServer();
-    	server.runTCPDUmp(tcpDumpCommand, true);
-    }
- 
-    private void runTCPDUmp(String tcpDumpCommand, boolean waitForResult) throws IOException, InterruptedException {
+    public MyServer(int knockPort, ArrayList<Integer> knockSequence) {
+		this.confirmKnockingPort = knockPort;
+		this.confirmKnockingSequence = knockSequence;
+		String command = "/usr/sbin/tcpdump -A -l -n udp port '(";
+		for(int i = 0; i < confirmKnockingSequence.size(); i ++) {
+			if(i == confirmKnockingSequence.size() -1) {
+				command += "" + confirmKnockingSequence.get(i) + ")'";
+			}
+			else command += "" + confirmKnockingSequence.get(i) + " or ";
+		}
+		this.tcpDumpCommand = command;
+	}
+
+
+	public void runTCPDUmp() throws IOException, InterruptedException {
 		
     	// set up logging file
         try {
@@ -90,7 +99,7 @@ public class MyServer extends Thread {
         		if(hashKnock.containsKey(aks)) {
 
         			// if its over 30 seconds since previous packet is arrived, assume packet loss and timeout occured
-        			if(!hashKnock.get(aks).isEmpty() && (arrivalTime - hashKnock.get(aks).get(hashKnock.get(aks).size() -1).getArrivalTime() > 30.0)) {
+        			if(!hashKnock.get(aks).isEmpty() && (arrivalTime - hashKnock.get(aks).get(hashKnock.get(aks).size() -1).getArrivalTime() > 20.0)) {
         				logger.warning("Late knock packets from: IP - " + srcIP + ": Port - " + srcPort +  ". Starting port knocking from specified IP address assuming packet loss & timeout occured");
 	            		hashKnock.get(aks).clear();
         			}
@@ -120,9 +129,22 @@ public class MyServer extends Thread {
 				logger.info("Single Knock Attempt ClientIP - " + aks.getAddress() + ": ClientPort - " 
 						+ aks.getPort() + ": Port Knock Entered - " + destPort);
 	        	
+				// deal with packet with ntp timestamp in future
+				if(Long.parseLong(values[0]) > System.currentTimeMillis()) {
+					logger.severe("Future time in Single Packet Knock: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
+					hashKnock.get(aks).clear();
+					break;
+				}
+				
+				// print 'late packet arrival' message
+				// when incoming packet ntp timestamp is greater than previous packet timestamp
+				if(!(hashKnock.get(aks).size() == 0) && Long.parseLong(values[0]) < hashKnock.get(aks).get(hashKnock.get(aks).size() - 1).getTime()) {
+					logger.warning("Late packet arrival in Single Packet Knock: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
+				}
+				
 	        	// get hashmap array of single knocks
 				ArrayList<SingleKnock> arr = hashKnock.get(aks);
-	            	
+	            
             	// add incoming knock to the attempt
             	SingleKnock single = null;
             	try {
@@ -132,7 +154,7 @@ public class MyServer extends Thread {
 	        	}
 
             	// check if renewal connection attempt, clear current connection knock in hashmap
-            	if(aks.getSubmittedConnection() && (hashKnock.get(aks).size() == 4) && !aks.getRenewingConnection()) {
+            	if(aks.getSubmittedConnection() && (hashKnock.get(aks).size() == confirmKnockingSequence.size()) && !aks.getRenewingConnection()) {
             		hashKnock.get(aks).clear();
             		aks.setRenewingConnection(true);
             	}
@@ -140,9 +162,9 @@ public class MyServer extends Thread {
             	hashKnock.computeIfAbsent(aks, k -> new ArrayList<>()).add(single);
 
             	// if array size is now full
-            	if(arr.size() == 4) {
+            	if(arr.size() == confirmKnockingSequence.size()) {
             		
-            		// sort single knoc of corresponding attempt knocking sequence based on timestamp in packet data
+            		// sort single knocks of corresponding attempt knocking sequence based on ntp timestamps in single knock packets
             		Collections.sort(hashKnock.get(aks));
             		
             		// populate knock and connection sequences in the hashmap

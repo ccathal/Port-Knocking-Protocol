@@ -1,110 +1,70 @@
-Feb 19, 2020 8:45:14 PM src.MyServer runTCPDUmp
+Feb 26, 2020 1:48:20 PM src.MyServer runTCPDUmp
 INFO: Desired Knock Sequence - [5, 7000, 4000, 6543] : Corresponding Knock Port - 23
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 5
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 7000
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 4000
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 6543
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Correct Knock Sequence: IP - /192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:18 PM src.MyServer runTCPDUmp
-INFO: Submitting connection ports for allowed connection: Connection Knocks - [12262, 41405, 31669, 38022]
-Feb 19, 2020 8:45:19 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 12262
-Feb 19, 2020 8:45:29 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 41405
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 5
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 7000
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 4000
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58258: Port Knock Entered - 6543
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Correct Knock Sequence: IP - /192.168.56.1: Port - 58258
-Feb 19, 2020 8:45:29 PM src.MyServer runTCPDUmp
-INFO: Submitting connection ports for allowed connection: Connection Knocks - [4696, 41024, 58587, 34581]
-Feb 19, 2020 8:45:39 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 4696
-Feb 19, 2020 8:45:39 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 41024
-Feb 19, 2020 8:45:49 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 58587
-Feb 19, 2020 8:45:49 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 34581
-Feb 19, 2020 8:45:49 PM src.Connection portAppend
-INFO: All connections submitted. Disconnection occuring.
-Feb 19, 2020 8:45:49 PM src.Connection dropConnection
-INFO: Server closing connection with Client IP - /192.168.56.1
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 5
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58259
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 7000
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58259
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 4000
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58259
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 6543
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Correct Knock Sequence: IP - /192.168.56.1: Port - 58259
-Feb 19, 2020 8:45:59 PM src.MyServer runTCPDUmp
-INFO: Submitting connection ports for allowed connection: Connection Knocks - [54737, 12024, 9865, 27798]
-Feb 19, 2020 8:45:59 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 54737
-Feb 19, 2020 8:46:09 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 12024
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58259
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 5
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58259
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 7000
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58259
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 4000
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 58259
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 58259: Port Knock Entered - 6543
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Correct Knock Sequence: IP - /192.168.56.1: Port - 58259
-Feb 19, 2020 8:46:10 PM src.MyServer runTCPDUmp
-INFO: Submitting connection ports for allowed connection: Connection Knocks - [18490, 22359, 40336, 1885]
-Feb 19, 2020 8:46:19 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 18490
-Feb 19, 2020 8:46:19 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 22359
-Feb 19, 2020 8:46:29 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 40336
-Feb 19, 2020 8:46:29 PM src.Connection portAppend
-INFO: Server serving Client IP - /192.168.56.1 on connection port - 1885
-Feb 19, 2020 8:46:29 PM src.Connection portAppend
-INFO: All connections submitted. Disconnection occuring.
-Feb 19, 2020 8:46:29 PM src.Connection dropConnection
-INFO: Server closing connection with Client IP - /192.168.56.1
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 57581: Port Knock Entered - 5
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 57581
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 57581: Port Knock Entered - 7000
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 57581
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 57581: Port Knock Entered - 4000
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Multiple knock packets from: IP - 192.168.56.1: Port - 57581
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Single Knock Attempt ClientIP - /192.168.56.1: ClientPort - 57581: Port Knock Entered - 6543
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Correct Knock Sequence: IP - /192.168.56.1: Port - 57581
+Feb 26, 2020 1:48:48 PM src.MyServer runTCPDUmp
+INFO: Submitting connection ports for allowed connection: Connection Knocks - [46743, 8190, 9570, 29903]
+Feb 26, 2020 1:48:49 PM src.Connection portAppend
+INFO: Server serving Client IP - /192.168.56.1 on connection port - 46743
+Feb 26, 2020 1:53:49 PM src.Connection portAppend
+INFO: Server serving Client IP - /192.168.56.1 on connection port - 8190
+Feb 26, 2020 1:58:49 PM src.Connection portAppend
+INFO: Server serving Client IP - /192.168.56.1 on connection port - 9570
+Feb 26, 2020 1:58:49 PM src.Connection portAppend
+INFO: Server serving Client IP - /192.168.56.1 on connection port - 29903
+Feb 26, 2020 1:59:25 PM src.MyServer runTCPDUmp
+WARNING: Error running tcpdump: java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+	at java.lang.String.substring(String.java:1967)
+	at src.MyServer.runTCPDUmp(MyServer.java:82)
+	at src.ServerGui$1$2.actionPerformed(ServerGui.java:132)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6539)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	at java.awt.Component.processEvent(Component.java:6304)
+	at java.awt.Container.processEvent(Container.java:2239)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2297)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4904)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4535)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4476)
+	at java.awt.Container.dispatchEventImpl(Container.java:2283)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	at java.awt.EventQueue$4.run(EventQueue.java:733)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+. Continuing runnning.

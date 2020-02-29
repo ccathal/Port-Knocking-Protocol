@@ -7,16 +7,16 @@ import java.util.Objects;
 public class SingleKnock implements Comparable<SingleKnock> {
 	
 	private int portKnock;
-	private long time;
+	private long ntpTime;
 	private int connectionKnock;
 	private long arrivalTime;
 
-	public SingleKnock(int portKnock, long time, int connectionKnock, long arrivalTime) {
-		if(portKnock == 0 || time == 0 || connectionKnock == 0 || arrivalTime == 0 ) {
+	public SingleKnock(int portKnock, long ntpTime, int connectionKnock, long arrivalTime) {
+		if(portKnock == 0 || ntpTime == 0 || connectionKnock == 0 || arrivalTime == 0 ) {
 			throw new IllegalArgumentException();
 		} else {
 			this.portKnock = portKnock;
-			this.time = time;
+			this.ntpTime = ntpTime;
 			this.connectionKnock = connectionKnock;
 			this.arrivalTime = arrivalTime;
 		}
@@ -31,7 +31,7 @@ public class SingleKnock implements Comparable<SingleKnock> {
 	}
 	
 	public long getTime() {
-		return this.time;
+		return this.ntpTime;
 	}
 	
 	public long getArrivalTime() {
@@ -41,9 +41,9 @@ public class SingleKnock implements Comparable<SingleKnock> {
 	// compareTo method to sort single knocks based on time
 	@Override
 	public int compareTo(SingleKnock s1) {
-		if(Objects.equals(this.time, s1.time)) {
+		if(Objects.equals(this.ntpTime, s1.ntpTime)) {
 			return 0;
-		} else if(this.time > s1.time) {
+		} else if(this.ntpTime > s1.ntpTime) {
 			return 1;
 		} else {
 			return -1;
