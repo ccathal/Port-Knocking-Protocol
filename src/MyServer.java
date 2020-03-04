@@ -129,17 +129,24 @@ public class MyServer extends Thread {
 	        	}
         		
         		long t = System.currentTimeMillis();
-        		String[] signatureSplit = inputStreamReader.readLine().split(";");
-				
-    			String text = new String(signatureSplit[1].toString().getBytes(), 0, signatureSplit[1].toString().getBytes().length);
-    			String sign = new String(signatureSplit[0].toString().substring(28).getBytes(), 0, signatureSplit[0].toString().substring(28).getBytes().length);
-
         		
         		String values[] = null;
+        		String[] signatureSplit = inputStreamReader.readLine().split(";");
         		// check if the client has submitted their public key to the server to authenticate itself
         		if(this.keyManagment.containsKey(InetAddress.getByName(srcIP))) {
+        			
+        			String text = "";
+        			String sign = "";
+            		try {
+            			text = new String(signatureSplit[1].toString().getBytes(), 0, signatureSplit[1].toString().getBytes().length);
+            			sign = new String(signatureSplit[0].toString().substring(28).getBytes(), 0, signatureSplit[0].toString().substring(28).getBytes().length);
+            		} catch (Exception ex) {
+            			logger.info("Error parsing packets clipher text and signature text: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
+            			parsingCheck = false;
+            		}
+            		
         			// server contains clients key but needs to verify signature
-	        		if(verify(text, sign, this.keyManagment.get(InetAddress.getByName(srcIP)))) {
+	        		if(parsingCheck && verify(text, sign, this.keyManagment.get(InetAddress.getByName(srcIP)))) {
 		        		try {
 		        			// client signature verified
 		        			// decrypt aesKey using RSA private key
@@ -159,7 +166,8 @@ public class MyServer extends Thread {
 							values = plainText.split(",");
 							System.out.println(System.currentTimeMillis() - t);
 							
-							if(!values[2].equals(InetAddress.getLocalHost().getHostAddress()) || !values[3].equals(srcIP)) {
+							// if(!values[2].equals(InetAddress.getLocalHost().getHostAddress()) || !values[3].equals(srcIP)) {
+							if(!values[2].equals("192.168.56.101") || !values[3].equals(srcIP)) {
 								logger.severe("Server and/or client ID prepended to packet message have been modified by unauthorized user: IP - " + aks.getAddress() + ": Port - " + aks.getPort());
 								parsingCheck = false;
 							}
