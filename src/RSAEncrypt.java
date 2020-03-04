@@ -22,7 +22,7 @@ public class RSAEncrypt {
 	// have base64 encoded public key
 	// first Base64 decode and generate the public key
 	// need X509EncodedKeySpec class to convert it again to RSA public key
-	// ***** currently not used : only needed if publickey is converted to base64 (String)
+	// needed if publickey is converted to base64 (String)
 	public static PublicKey getPublicKey(String base64PublicKey) {
         PublicKey publicKey = null;
         try{
@@ -72,6 +72,7 @@ public class RSAEncrypt {
     public static byte[] decrypt(String privateKey, String data) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
     	Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
     	cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
+    	//return cipher.doFinal(Base64.getDecoder().decode(data.getBytes()));
     	return cipher.doFinal(Base64.getDecoder().decode(data.getBytes()));
     }
 }
