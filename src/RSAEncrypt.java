@@ -61,7 +61,15 @@ public class RSAEncrypt {
 
     // encryption method
     // takes the string to be enrypted and the Base64 encoded RSA key for encryption
-    public static byte[] encrypt(String publicKey, SecretKey secKey) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
+    public static byte[] encrypt(String publicKey, String plainText) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
+        return cipher.doFinal(plainText.getBytes());
+    }
+    
+    // encryption method
+    // takes the string to be enrypted and the Base64 encoded RSA key for encryption
+    public static byte[] encryptKey(String publicKey, SecretKey secKey) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
         return cipher.doFinal(secKey.getEncoded());

@@ -11,7 +11,7 @@ public class RSAKeyPairGenerator {
     // public key is generated in X.509 format
     public RSAKeyPairGenerator() throws NoSuchAlgorithmException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(1024);
+        keyGen.initialize(2048);
         KeyPair pair = keyGen.generateKeyPair();
         this.privateKey = pair.getPrivate();
         this.publicKey = pair.getPublic();
