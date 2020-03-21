@@ -56,9 +56,9 @@ public class MyClient {
 		}
 
 		// ask user to input each port for port knocking sequence & validate input
+		Scanner in = new Scanner(System.in);
 		ArrayList<Integer> knockSequence = new ArrayList<Integer>();
 		for (int j = 0; j < portSequenceSize; j++) {
-			Scanner in = new Scanner(System.in);
 			System.out.println("Enter port number " + (j + 1) + " of sequence: ");
 			try {
 				int port = in.nextInt();
@@ -68,9 +68,11 @@ public class MyClient {
 				System.out.println("Not a valid port number between 0 - 65535");
 				System.out.println(
 						"Error: Run Port Knocking Client: java src.MyClient <port_sequence_size> <server_ip_address>");
+				in.close();
 				System.exit(0);
 			}
 		}
+		in.close();
 		// send port knocking sequence
 		new MyClient(serverAddr, knockSequence, serverPubKey, clientPrivKey);
 		System.out.println("\nPort Knocking Sequence Successfully Sent!");
