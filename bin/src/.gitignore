@@ -2,3 +2,8 @@
 /MyServer.class
 /UDPTest.class
 /RSAEncrypt.class
+/AttemptKnockingSequence.class
+/KnockingSequenceList.class
+/PacketCapture.class
+/RSAKeyPairGenerator.class
+/SingleKnock.class
