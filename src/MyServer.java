@@ -34,11 +34,11 @@ public class MyServer extends Thread {
 	private final String clientPubKey1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq9nVxnrbsIOU5q9t6VG4hiK/RFO4NcuFcI4M9kRxA3EdO9Xu5H+koe/31MDj66sUQ50sayUp/u5EDmgXEoBt5waG5U4jp7pUyLFSs6gxmFa2M1qnurFvy4Lunui3Cu3rnU/6MiL7IP57HCHa76Aei8bOwJ255dAyStmtvEqiZcts2VZUk+sYN1JwGBEVyXqTp2NH0ybdY1GpYaR4EZnrB8+5+0hls0XdWGnW/lo32POlyrOj2d7sJEj8pEz/WEUjKONiR7BgR13M0G9rUhQqlRyRQ9qFI78eQ0aLJntnb8ZMLfXBxMyas+2h7nC3iMc5K2tK7XicbZwNqo9Rgd94wwIDAQAB";
 	private HashMap<InetAddress, String> keyManagment = new HashMap<>();
 
-	// main method to send port knocking sequence via command line
-	public static void main(String args[]) {
+	// main method to start server via command line
+	public static void main(String args[]) throws IOException, InterruptedException {
 
 		int portSequenceSize = 0;
-		// validate user inputs
+		// validate user inputs of port knocking sequence size
 		try {
 			portSequenceSize = Integer.parseInt(args[0]);
 			if (!(portSequenceSize > 2)) {
@@ -46,7 +46,7 @@ public class MyServer extends Thread {
 			}
 			// print error message for invalid inputs
 		} catch (Exception ex) {
-			System.out.println("Error: Run Port Knocking Client: java src.MyClient <port_sequence_size>");
+			System.out.println("Error: Run Port Knocking Client: java src.MyServer <port_sequence_size>");
 			System.exit(0);
 		}
 
@@ -71,14 +71,15 @@ public class MyServer extends Thread {
 		} catch (Exception e) {
 			System.out.println("Not a valid port number between 0 - 65535");
 			System.out.println(
-					"Error: Run Port Knocking Client: java src.MyClient <port_sequence_size> <server_ip_address>");
+					"Error: Run Port Knocking Client: java src.Server <port_sequence_size> <server_ip_address>");
 			in.close();
 			System.exit(0);
 		}
 
-		// send port knocking sequence
-		new MyServer(destPort, knockSequence);
-		System.out.println("\nPort Knocking Server Successfully Started!");
+		// start server with user inputs
+		System.out.println("\nPort Knocking Server Successfully Started!\n");
+		MyServer server = new MyServer(destPort, knockSequence);
+		server.runTCPDUmp();
 	}
 
 	public MyServer(int knockPort, ArrayList<Integer> knockSequence) {
