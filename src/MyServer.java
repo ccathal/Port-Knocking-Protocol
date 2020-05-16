@@ -289,7 +289,7 @@ public class MyServer extends Thread {
 					if (!(hashKnock.get(aks).size() == 0) && Long.parseLong(values[0]) < hashKnock.get(aks)
 							.get(hashKnock.get(aks).size() - 1).getTime()) {
 						logger.warning("Late packet arrival in Single Packet Knock: IP - " + aks.getAddress()
-								+ ": Port - " + aks.getPort());
+							+ ": Port - " + aks.getPort());
 					}
 
 					// get hashmap array of single knocks
@@ -301,7 +301,8 @@ public class MyServer extends Thread {
 						single = new SingleKnock(Integer.parseInt(destPort), Long.parseLong(values[0]),
 								Integer.parseInt(values[1]), arrivalTime);
 					} catch (IllegalArgumentException ex) {
-						System.out.println("XX");
+						logger.warning("Error adding single knock: IP - "+ aks.getAddress()
+							+ ": Port - " + aks.getPort());
 					}
 
 					// check if renewal connection attempt, clear current connection knock in

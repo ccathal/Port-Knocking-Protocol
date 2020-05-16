@@ -1,7 +1,0 @@
-Mar 21, 2020 10:00:42 PM src.MyServer runTCPDUmp
-INFO: Desired Knock Sequence - [2, 3, 4, 5] : Corresponding Knock Port - 6
-Mar 21, 2020 10:00:54 PM src.MyServer runTCPDUmp
-WARNING: Error running tcpdump: java.lang.ArrayIndexOutOfBoundsException: 2
-	at src.MyServer.runTCPDUmp(MyServer.java:147)
-	at src.MyServer.main(MyServer.java:82)
-. Continuing runnning.

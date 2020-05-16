@@ -205,7 +205,7 @@ public class Connection implements Runnable {
 		// schedule thread to run at fixed rate
 		// thread filters between disabling and appending connection knocks depending on
 		// knock availability
-		scheduledThreadPool.scheduleAtFixedRate(this, 30, 30, TimeUnit.SECONDS);
+		scheduledThreadPool.scheduleAtFixedRate(this, 90, 90, TimeUnit.SECONDS);
 	}
 
 	// drops client-server connection
