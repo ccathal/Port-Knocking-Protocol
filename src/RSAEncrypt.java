@@ -41,7 +41,8 @@ public class RSAEncrypt {
 	// generate private key
 	// private key is generated in PKCS#8 format
 	// generate the private key from base64 encoded string using PKCS8EncodedKeySpec
-	// currently not used : only needed if privatekey is converted to base64 (String)
+	// currently not used : only needed if privatekey is converted to base64
+	// (String)
 	public static PrivateKey getPrivateKey(String base64PrivateKey) {
 		PrivateKey privateKey = null;
 		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(base64PrivateKey.getBytes()));

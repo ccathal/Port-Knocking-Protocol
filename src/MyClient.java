@@ -32,13 +32,13 @@ public class MyClient {
 	private static final String clientPrivKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCr2dXGetuwg5Tmr23pUbiGIr9EU7g1y4Vwjgz2RHEDcR071e7kf6Sh7/fUwOPrqxRDnSxrJSn+7kQOaBcSgG3nBoblTiOnulTIsVKzqDGYVrYzWqe6sW/Lgu6e6LcK7eudT/oyIvsg/nscIdrvoB6Lxs7Anbnl0DJK2a28SqJly2zZVlST6xg3UnAYERXJepOnY0fTJt1jUalhpHgRmesHz7n7SGWzRd1Yadb+WjfY86XKs6PZ3uwkSPykTP9YRSMo42JHsGBHXczQb2tSFCqVHJFD2oUjvx5DRosme2dvxkwt9cHEzJqz7aHucLeIxzkra0rteJxtnA2qj1GB33jDAgMBAAECggEABdWadWecZ8y/1GkmUSKOIjexyK8S9PiY6i5YcE/4ikZf2LU1rBpNS5YrEtUNp+WiBX2jkWusllQeiWKtTdqAYLSPBd/2Q+6GjF3A0gqmzGY9P1cXlLYLdpxWX5zFAiD7u9aIRwV7Ay7AnT7lAPetsc8pG87/DbdYzcPAK0FZbB1CdcT1N94g4o3QI/3cybDRe+Z57M6DSAYe+1ogRikAqD7QLD2pnLU+ypVspR84Lq+LbLh+2D+hnZ+hiW52s5khzR24A5OOHUNzq7eAfl+tOhLkyNExpEqB79DnUkBPd8ttT2nd0EY3tIPSPfmj8qSFO7aypccz06jPe7Dj0q4RCQKBgQD7auN9gML1xZKdUEWv4CirDh9qlTudvOxnRAIOYdJtpPqB2GIA+6sCFNfWBsgGjmhYxsm+irgcQCxXkRcmExwd8fVfy37d9jwpZ4f/abhmxPx6rJHeK8jGXfPqFgnXWC2lUByla8cND6egss/1D6Oo4WZ+FQVIff9cDnXgHuQ8PQKBgQCu+7CC/SQi03d8+JP3ZNIPopbW/wxCdvIzkHK1IWxFcLNYOxSptVH37r/FEzM8dml2LMSNb4rtM3jmw9JPT4jQ81T4U4NZfisUmwxyBRpYCLgYAUDGjaIYk+Gg0PmXcZUSsU0PrOThNAh6S6JhGmTQlB9zn0jq59R6yQsd58TY/wKBgDIOPeymzioQg/g+GyHBB1fHIAogXBYznv2QVLh4UWTzC8z+P8TiVlG7xJ0gDIMBp1TFfzUoeS9mt21Xvbwe4eI0Yh4IbeHTPHch3bnEWqpbXckuwnvxS6/y1LUuXhc5vxzCrnFg2+iFzWH5N94alwLwnW9M0Bh2vXieiGluvRIhAoGAFeY1/w7DWQByMdfCXPHnQEGu8xVUaXUNdtqbIIQgUsh6CY7LVTn2GjttELMIdIa1SC7uIm1VS75nYSocxgREMTJi7fk1tRuPNLL66cItu9rLf2WYv8C2CrFnSYMd2ZBDgeViqZWPx4eFkBirJ8/v0hLXpNbIf22oL/29QG7jOe0CgYEAlPogHkE+5Q7OfJwabc56PMkNSm2ruFQ7WqLxie0jUXnIDYxr6TUFnrwpAmrwNmsZ+l8NOSjgHwJhb9taJBNGbtXWieNx0TcjeVRoXssV5BKksT2v4PLbjS3Vl/gBiIX3iszLTQBj7QJLNWT1VPKGMA2Buw57gtBZKyC8lQ4LVyc=";
 
 	// main method to send prot knocking sequence via command line
-	public static void main(String args[]) {
+	public static void main(String args[]) throws UnknownHostException {
 
 		InetAddressValidator validAddr = new InetAddressValidator();
 		int portSequenceSize = 0;
 		String serverIP = "";
 		InetAddress serverAddr = null;
-		
+
 		// validate user inputs
 		try {
 			portSequenceSize = Integer.parseInt(args[0]);
@@ -48,7 +48,7 @@ public class MyClient {
 			} else {
 				serverAddr = InetAddress.getByName(serverIP);
 			}
-		// print error message for invalid inputs
+			// print error message for invalid inputs
 		} catch (Exception ex) {
 			System.out.println(
 					"Error: Run Port Knocking Client: java src.MyClient <port_sequence_size> <server_ip_address>");
@@ -63,7 +63,7 @@ public class MyClient {
 			try {
 				int port = in.nextInt();
 				knockSequence.add(port);
-			// print error message for invalid inputs
+				// print error message for invalid inputs
 			} catch (Exception e) {
 				System.out.println("Not a valid port number between 0 - 65535");
 				System.out.println(
@@ -74,12 +74,14 @@ public class MyClient {
 		}
 		in.close();
 		// send port knocking sequence
+
 		new MyClient(serverAddr, knockSequence, serverPubKey, clientPrivKey);
 		System.out.println("\nPort Knocking Sequence Successfully Sent!");
 	}
 
 	// open datagram socket on client side with localhost address
-	public MyClient(InetAddress address, ArrayList<Integer> knockSequence, String pubkey, String privkey) {
+	public MyClient(InetAddress address, ArrayList<Integer> knockSequence, String pubkey, String privkey)
+			throws UnknownHostException {
 		try {
 			socket = new DatagramSocket();
 		} catch (SocketException e) {
@@ -97,9 +99,9 @@ public class MyClient {
 	}
 
 	// send packets method
-	public ArrayList<Integer> sendEcho(ArrayList<Integer> knockSequence)
+	public void sendEcho(ArrayList<Integer> knockSequence)
 			throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException,
-			NoSuchAlgorithmException, InterruptedException {
+			NoSuchAlgorithmException, InterruptedException, UnknownHostException {
 
 		// get list of random ports of length 'knockingsequence' to be used as sequence
 		// of connection ports
@@ -152,6 +154,15 @@ public class MyClient {
 			String sendPacket = signedPacket + ";" + packetData;
 			// send packet
 			buf = sendPacket.getBytes();
+
+			/**
+			 * DatagramPacket packet = null; if (this.address instanceof Inet6Address) {
+			 * packet = new DatagramPacket(buf, buf.length,
+			 * Inet6Address.getByName(address.toString()), knockSequence.get(i)); } else if
+			 * (this.address instanceof Inet6Address) { packet = new DatagramPacket(buf,
+			 * buf.length, address, knockSequence.get(i)); }
+			 */
+
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, knockSequence.get(i));
 			try {
 				socket.send(packet);
@@ -159,7 +170,7 @@ public class MyClient {
 				e.printStackTrace();
 			}
 		}
-		return connectionPorts;
+		System.out.println("Connection Ports - " + connectionPorts + "\n");
 	}
 
 	// test method to send out of order packets (testing from UDPTest class)
