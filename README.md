@@ -1,5 +1,5 @@
 # Port-Knocking-Protocol
-4th Year Final Year Project on the design, implementation and testing of a Port Knocking Protocol.
+4th Year Final Year Project on the design, implementation and testing of a Port Knocking Protocol perhaps suitable for IoT devices.
 
 ## Port Knocking Title
 𝑁 UDP packet sequence Port Knocking Protocol using ‘Encrypt-Then-Sign’ RSA-AES Hybrid Encryption and Digital Signature with client-server connection of 𝑁 random ports.
