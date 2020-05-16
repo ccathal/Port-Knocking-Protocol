@@ -4,7 +4,7 @@
 ## Port Knocking Title
 𝑁 UDP packet sequence Port Knocking Protocol using ‘Encrypt-Then-Sign’ RSA-AES Hybrid Encryption and Digital Signature with client-server connection of 𝑁 random ports.
 
-### **Features** of the Port Knocking Protocol include:
+### Features of the Port Knocking Protocol:
   - The protocol is fully written in Java using Java Sockets
   - PK sequence sent over UDP
   - Implementation of RSA with AES Hybrid Encryption
